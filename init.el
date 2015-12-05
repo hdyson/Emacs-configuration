@@ -1,3 +1,6 @@
 (if (file-readable-p "~/.emacs.d/config/basic.el")
        (load "~/.emacs.d/config/basic.el" nil t))
-(message "Loaded init")
+(if (file-readable-p "~/.emacs.d/config/keys.el")
+       (load "~/.emacs.d/config/keys.el" nil t))
+(if (file-readable-p "~/.emacs.d/config/python.el")
+       (load "~/.emacs.d/config/python.el" nil t))
