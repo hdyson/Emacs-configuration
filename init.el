@@ -4,3 +4,5 @@
        (load "~/.emacs.d/config/keys.el" nil t))
 (if (file-readable-p "~/.emacs.d/config/python.el")
        (load "~/.emacs.d/config/python.el" nil t))
+(if (file-readable-p "~/.emacs.d/config/functions.el")
+       (load "~/.emacs.d/config/functions.el" nil t))
