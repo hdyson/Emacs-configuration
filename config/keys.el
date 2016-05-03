@@ -26,7 +26,6 @@
 (global-set-key [f7]  'buffer-menu)
 
 (global-set-key [C-tab] 'other-window)
-(global-set-key [C-`] 'other-window)
 (global-set-key [M-delete] 'kill-word)
 
 (global-set-key [insert] 'abbrev-mode)
