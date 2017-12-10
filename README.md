@@ -12,8 +12,11 @@ To install requisite python packages, run ```(elpy-config)``` and follow the ins
 
 ### Tips:
 
-Reminder for activating/deactivating a venv/conda env:
+* Reminder for activating/deactivating a venv/conda env:
 ```
 (pyvenv-activate (expand-file-name "~/path/to/venv"))
 (pyvenv-deactivate)
 ```
+* To use ipython inferior python (must be installed in the activated venv): ```(elpy-use-ipython)```.
+
+* To start notebook server: ```ein:jupyter-server-start```
