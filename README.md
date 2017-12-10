@@ -8,17 +8,9 @@ Corresponding ```.emacs``` file is just:
 
 Using a separate init file isolates changes via the custom interface to the init.el file.
 
-Includes required emacs packages, requires these python packages to be install too (via pip or similar).
+To install requisite python packages, run ```(elpy-config)``` and follow the instructions.
 
-For [flycheck](http://www.flycheck.org/manual/0.25.1/index.html):
-
-1. pyflakes
-
-For [Jedi.el](http://tkf.github.io/emacs-jedi/latest/):
-
-1. virtualenv
-2. epc
-3. jedi
+### Tips:
 
 Reminder for activating/deactivating a venv/conda env:
 ```
