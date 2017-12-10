@@ -1,6 +1,6 @@
 ## Customisations for emacs for python development.
 
-Corresponding ```.emacs``` file is just:
+Checkout to ```~/.emacs.d``` directory.  The corresponding ```~/.emacs``` file is just:
 
 ```
 (load "~/.emacs.d/init.el" nil t)
