@@ -14,7 +14,6 @@
   '(elpy
     flycheck
     py-autopep8
-    ein
     ))
 
 (mapc #'(lambda (package)
