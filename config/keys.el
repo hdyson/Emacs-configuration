@@ -18,12 +18,15 @@
 (global-set-key [pause] 'toggle-read-only)
 (global-set-key [f10] 'toggle-read-only)
 
-(global-set-key [f2]  'split-window)
-(global-set-key [f11]  'split-window)
-(global-set-key [f5]  'save-buffer)
+(global-set-key [f5]  'bookmark-set-no-overwrite)
+(global-set-key [f8]  'bookmark-jump)
 
 (global-set-key [f6]  'execute-extended-command)
 (global-set-key [f7]  'buffer-menu)
+
+(global-set-key [f9]  'flycheck-next-error)
+(global-set-key [f10]  'flycheck-mode)
+(global-set-key [S-f9]  'flycheck-previous-error)
 
 (global-set-key [C-tab] 'other-window)
 (global-set-key [M-delete] 'kill-word)

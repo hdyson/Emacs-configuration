@@ -7,6 +7,9 @@
 (setq default-major-mode 'text-mode)
 (tool-bar-mode 0)
 
+;; Show file path in frame title
+(setq-default frame-title-format "%b (%f)")
+
 ;; Working on parts of text
 ;; ------------------------
 ;; NB: `C-x n n' is narrow-to-region
@@ -72,3 +75,10 @@
       (message "Opening file...")
     (message "Aborting")))
 ;; End config for recentf
+
+;; Launch eshell at startup:
+
+(add-hook 'emacs-startup-hook 'eshell)
+
+;; Fix for emacs 24 -> 25 migration issue
+(modify-all-frames-parameters '((horizontal-scroll-bars . nil)))
