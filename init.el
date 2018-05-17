@@ -3,9 +3,9 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -14,6 +14,7 @@
   '(elpy
     flycheck
     py-autopep8
+    iedit
     ))
 
 (mapc #'(lambda (package)
@@ -54,6 +55,7 @@
  '(kill-read-only-ok t)
  '(kill-whole-line t)
  '(mouse-avoidance-mode nil nil (avoid))
+ '(package-selected-packages (quote (iedit py-autopep8 flycheck elpy)))
  '(python-check-command (executable-find "flake8"))
  '(python-fill-docstring-style (quote onetwo))
  '(python-shell-first-prompt-hook
