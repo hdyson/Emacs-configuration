@@ -6,6 +6,8 @@ Using a separate init file isolates changes via the custom interface to the init
 
 To install requisite python packages, run ```(elpy-config)``` and follow the instructions.
 
+Requires Emacs 24.4 or higher (tested with 26.1).
+
 ### Tips:
 
 * Reminder for activating/deactivating a venv/conda env:
