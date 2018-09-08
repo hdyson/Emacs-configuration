@@ -1,4 +1,4 @@
-## Customisations for emacs for python development.
+## Customisations for emacs, mainly for python development.
 
 Checkout to ```~/.emacs.d``` directory, and remove ```~/.init.el``` etc.
 
@@ -15,3 +15,9 @@ Requires Emacs 24.4 or higher (tested with 26.1).
 (pyvenv-activate (expand-file-name "~/miniconda2/envs/emacs"))
 (pyvenv-deactivate)
 ```
+
+### Uses (and installs) following emacs packages:
+
+1. Elpy: https://github.com/jorgenschaefer/elpy
+2. Magit: https://github.com/magit/magit
+3. Dashboard: https://github.com/rakanalh/emacs-dashboard

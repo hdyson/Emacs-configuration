@@ -1,3 +1,4 @@
+
 (require 'package) ;; You might already have this line
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -11,17 +12,29 @@
   (package-refresh-contents))
 
 (defvar myPackages
-  '(elpy
+  '(elpy  ;; https://github.com/jorgenschaefer/elpy
     flycheck
     py-autopep8
     iedit
-    magit
+    magit ;; https://github.com/magit/magit
+    dashboard  ;; https://github.com/rakanalh/emacs-dashboard
     ))
 
 (mapc #'(lambda (package)
     (unless (package-installed-p package)
       (package-install package)))
       myPackages)
+
+;; dashboard config:
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+(setq dashboard-startup-banner 'official)
+(setq dashboard-items '((recents  . 15)
+                        (bookmarks . 10)
+                        ;; (projects . 5)
+                        ;; (agenda . 5)
+                        (registers . 5)))
+
 
 (if (file-readable-p "~/.emacs.d/config/basic.el")
        (load "~/.emacs.d/config/basic.el" nil t))
