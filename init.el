@@ -15,13 +15,13 @@
     flycheck
     py-autopep8
     iedit
+    magit
     ))
 
 (mapc #'(lambda (package)
     (unless (package-installed-p package)
       (package-install package)))
       myPackages)
-
 
 (if (file-readable-p "~/.emacs.d/config/basic.el")
        (load "~/.emacs.d/config/basic.el" nil t))

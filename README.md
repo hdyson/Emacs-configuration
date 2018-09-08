@@ -1,10 +1,6 @@
 ## Customisations for emacs for python development.
 
-Checkout to ```~/.emacs.d``` directory.  The corresponding ```~/.emacs``` file is just:
-
-```
-(load "~/.emacs.d/init.el" nil t)
-```
+Checkout to ```~/.emacs.d``` directory, and remove ```~/.init.el``` etc.
 
 Using a separate init file isolates changes via the custom interface to the init.el file.
 
