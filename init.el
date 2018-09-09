@@ -18,6 +18,8 @@
     iedit
     magit ;; https://github.com/magit/magit
     dashboard  ;; https://github.com/rakanalh/emacs-dashboard
+    markdown-mode  ;; https://jblevins.org/projects/markdown-mode/
+    multiple-cursors  ;; https://github.com/magnars/multiple-cursors.el
     ))
 
 (mapc #'(lambda (package)
@@ -34,6 +36,13 @@
                         ;; (projects . 5)
                         ;; (agenda . 5)
                         (registers . 5)))
+
+;; multiple cursors config:
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
+(global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
 
 
 (if (file-readable-p "~/.emacs.d/config/basic.el")
