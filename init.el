@@ -43,7 +43,7 @@
 (global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") mc/add-cursor-on-click)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 (if (file-readable-p "~/.emacs.d/config/basic.el")
        (load "~/.emacs.d/config/basic.el" nil t))
@@ -53,6 +53,8 @@
        (load "~/.emacs.d/config/python.el" nil t))
 (if (file-readable-p "~/.emacs.d/config/functions.el")
        (load "~/.emacs.d/config/functions.el" nil t))
+(if (file-readable-p "~/.emacs.d/config/local.el")
+       (load "~/.emacs.d/config/local.el" nil t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
