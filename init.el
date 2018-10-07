@@ -43,7 +43,8 @@
 (global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") mc/add-cursor-on-click)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click
+		)
 
 (if (file-readable-p "~/.emacs.d/config/basic.el")
        (load "~/.emacs.d/config/basic.el" nil t))

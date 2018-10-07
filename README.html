@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>README.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h2>Customisations for emacs, mainly for python development.</h2>
+
+<p>Checkout to <code>~/.emacs.d</code> directory, and remove <code>~/.init.el</code> etc.</p>
+
+<p>Using a separate init file isolates changes via the custom interface to the init.el file.</p>
+
+<p>To install requisite python packages, run <code>(elpy-config)</code> and follow the instructions.</p>
+
+<p>Requires Emacs 24.4 or higher (tested with 26.1).</p>
+
+<h3>Tips:</h3>
+
+<ul>
+<li>Reminder for activating/deactivating a venv/conda env:
+<code>
+(pyvenv-activate (expand-file-name "~/miniconda2/envs/emacs"))
+(pyvenv-deactivate)
+</code></li>
+</ul>
+
+<h3>Uses (and installs) following emacs packages:</h3>
+
+<ol>
+<li>Elpy: https://github.com/jorgenschaefer/elpy</li>
+<li>Magit: https://github.com/magit/magit</li>
+<li>Dashboard: https://github.com/rakanalh/emacs-dashboard</li>
+<li>Markdown mode: https://jblevins.org/projects/markdown-mode/</li>
+<li>Multiple cursors: https://github.com/magnars/multiple-cursors.el</li>
+</ol>
+
+</body>
+</html>
