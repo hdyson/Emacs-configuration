@@ -8,6 +8,8 @@
 (setq default-major-mode 'text-mode)
 (tool-bar-mode 0)
 (column-number-mode t)
+;; change all prompts to y or n
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Show file path in frame title
 (setq-default frame-title-format "%b (%f)")
@@ -66,7 +68,6 @@
 ;; searches ignore case
 (setq case-fold-search t)
 (setq show-trailing-whitespace t)
-
 ;; Config for recentf
 (require 'recentf)
 ;; enable recent files mode.
