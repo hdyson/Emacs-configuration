@@ -26,16 +26,6 @@
       (package-install package)))
       myPackages)
 
-;; dashboard config:
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-(setq dashboard-startup-banner 'official)
-(setq dashboard-items '((recents  . 15)
-                        (bookmarks . 10)
-                        ;; (projects . 5)
-                        ;; (agenda . 5)
-                        (registers . 5)))
-
 ;; multiple cursors config:
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
