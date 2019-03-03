@@ -10,6 +10,9 @@
 	  (if (file-readable-p config) (load config nil t)))
       myConfigFiles)
 
+
+;; C-h v (i.e. describe-variable) on variables for description of what they
+;; do:
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -32,7 +35,6 @@
  '(kill-read-only-ok t)
  '(kill-whole-line t)
  '(mouse-avoidance-mode nil nil (avoid))
- '(package-selected-packages (quote (iedit py-autopep8 flycheck elpy)))
  '(require-final-newline t)
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(shift-select-mode nil)
@@ -50,8 +52,7 @@
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))
  '(tab-stop-list (quote (4 8)))
- '(tool-bar-mode nil)
- '(truncate-lines t))
+ '(tool-bar-mode nil))
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)

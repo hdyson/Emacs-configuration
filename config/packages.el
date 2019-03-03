@@ -12,9 +12,9 @@
 
 (defvar myPackages
   '(elpy  ;; https://github.com/jorgenschaefer/elpy
-    flycheck
-    py-autopep8
-    iedit
+    flycheck  ;; elpy dependency
+    py-autopep8  ;; elpy dependency
+    iedit  ;; elpy dependency
     magit ;; https://github.com/magit/
     markdown-mode  ;; https://jblevins.org/projects/markdown-mode/
     multiple-cursors  ;; https://github.com/magnars/multiple-cursors.el

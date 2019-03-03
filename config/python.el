@@ -11,16 +11,19 @@
 
 ;; Use ipython for shell
 ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i --simple-prompt")
+;; (setq python-shell-interpreter "ipython"
+;;      python-shell-interpreter-args "-i --simple-prompt")
 
-(flycheck-disabled-checkers (quote (python-pylint)))
-(python-check-command (executable-find "flake8"))
-(python-fill-docstring-style (quote onetwo))
-(python-shell-first-prompt-hook
- (quote
-  (python-shell-completion-native-turn-on-maybe-with-msg python-shell-send-setup-code)))
-(python-shell-interpreter "ipython")
-(python-shell-interpreter-args "--simple-prompt ")
-(python-shell-interpreter-interactive-arg "-i")
-(python-shell-process-environment nil)
+;; Use jupyter for shell
+;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
+
+
+(setq python-check-command (executable-find "flake8"))
+;; onetwo means sinlge line docstring has quotes in same line; multi-line
+;; docstrings have quotes on separate lines.
+(setq python-fill-docstring-style (quote onetwo))
