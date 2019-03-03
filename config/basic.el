@@ -1,6 +1,6 @@
 ;;; Set desktop mode for restoring buffers across emacs sessions
 (desktop-save-mode 1)
-(setq desktop-path "~/.emacs.d/desktop" "~/.emacs.d/" "~")
+(setq desktop-path '("~/.emacs.d/desktop" "~/.emacs.d/" "~"))
 
 ;; Setup some defaults - put point on variable and do C-h v to find
 ;; appropriate docs quickly.

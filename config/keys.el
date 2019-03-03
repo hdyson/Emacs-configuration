@@ -44,10 +44,9 @@
 (global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click
-		)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 ;; get rid of `find-file-read-only' and replace it with something
 ;; more useful.
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 ;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
-(global-set-key (kbd "C-x C-c") '(save-some-buffers t nil))
+(global-set-key (kbd "C-x C-c") 'save-some-buffers)
