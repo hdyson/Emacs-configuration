@@ -1,48 +1,14 @@
-
-(require 'package) ;; You might already have this line
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(defvar myPackages
-  '(elpy  ;; https://github.com/jorgenschaefer/elpy
-    flycheck
-    py-autopep8
-    iedit
-    magit ;; https://github.com/magit/
-    markdown-mode  ;; https://jblevins.org/projects/markdown-mode/
-    multiple-cursors  ;; https://github.com/magnars/multiple-cursors.el
+(defvar myConfigFiles
+  '("~/.emacs.d/config/packages.el"
+    "~/.emacs.d/config/basic.el"
+    "~/.emacs.d/config/keys.el"
+    "~/.emacs.d/config/python.el"
+    "~/.emacs.d/config/functions.el"
     ))
 
-(mapc #'(lambda (package)
-    (unless (package-installed-p package)
-      (package-install package)))
-      myPackages)
-
-;; multiple cursors config:
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c m c") 'mc/edit-lines)
-(global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click
-		)
-
-(if (file-readable-p "~/.emacs.d/config/basic.el")
-       (load "~/.emacs.d/config/basic.el" nil t))
-(if (file-readable-p "~/.emacs.d/config/keys.el")
-       (load "~/.emacs.d/config/keys.el" nil t))
-(if (file-readable-p "~/.emacs.d/config/python.el")
-       (load "~/.emacs.d/config/python.el" nil t))
-(if (file-readable-p "~/.emacs.d/config/functions.el")
-       (load "~/.emacs.d/config/functions.el" nil t))
+(mapc #'(lambda (config)
+	  (if (file-readable-p config) (load config nil t)))
+      myConfigFiles)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

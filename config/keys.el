@@ -37,3 +37,12 @@
 (global-set-key [print]  'ps-print-buffer-with-faces)
 
 (global-set-key "\M-?" 'hippie-expand)
+
+;; multiple cursors config:
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
+(global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click
+		)
