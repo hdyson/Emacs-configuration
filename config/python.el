@@ -13,3 +13,14 @@
 ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "-i --simple-prompt")
+
+(flycheck-disabled-checkers (quote (python-pylint)))
+(python-check-command (executable-find "flake8"))
+(python-fill-docstring-style (quote onetwo))
+(python-shell-first-prompt-hook
+ (quote
+  (python-shell-completion-native-turn-on-maybe-with-msg python-shell-send-setup-code)))
+(python-shell-interpreter "ipython")
+(python-shell-interpreter-args "--simple-prompt ")
+(python-shell-interpreter-interactive-arg "-i")
+(python-shell-process-environment nil)

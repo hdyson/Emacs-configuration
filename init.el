@@ -28,21 +28,11 @@
  '(eshell-modules-list
    (quote
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra)))
- '(flycheck-disabled-checkers (quote (python-pylint)))
  '(ido-mode (quote both) nil (ido))
  '(kill-read-only-ok t)
  '(kill-whole-line t)
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages (quote (iedit py-autopep8 flycheck elpy)))
- '(python-check-command (executable-find "flake8"))
- '(python-fill-docstring-style (quote onetwo))
- '(python-shell-first-prompt-hook
-   (quote
-    (python-shell-completion-native-turn-on-maybe-with-msg python-shell-send-setup-code)))
- '(python-shell-interpreter "ipython")
- '(python-shell-interpreter-args "--simple-prompt ")
- '(python-shell-interpreter-interactive-arg "-i")
- '(python-shell-process-environment nil)
  '(require-final-newline t)
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(shift-select-mode nil)
