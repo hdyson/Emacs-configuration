@@ -20,7 +20,6 @@ Requires Emacs 24.4 or higher (tested with 26.1).
 
 1. Elpy: https://github.com/jorgenschaefer/elpy
 2. Magit: https://github.com/magit/magit
-3. Dashboard: https://github.com/rakanalh/emacs-dashboard
-4. Markdown mode: https://jblevins.org/projects/markdown-mode/
-5. Multiple cursors: https://github.com/magnars/multiple-cursors.el
+3. Markdown mode: https://jblevins.org/projects/markdown-mode/
+4. Multiple cursors: https://github.com/magnars/multiple-cursors.el
 
