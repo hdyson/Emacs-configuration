@@ -6,7 +6,10 @@ Using a separate init file isolates changes via the custom interface to the init
 
 To install requisite python packages, run ```(elpy-config)``` and follow the instructions.
 
-Requires Emacs 24.4 or higher (tested with 26.1).
+Requires Emacs 24.4 or higher (tested with 26.1).  Might be possible to work
+with emacs 24.3 using
+https://github.com/jorgenschaefer/elpy/tree/backport-emacs24.3 and dropping
+magit.
 
 ### Tips:
 
