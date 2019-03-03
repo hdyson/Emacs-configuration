@@ -27,3 +27,8 @@
 ;; onetwo means sinlge line docstring has quotes in same line; multi-line
 ;; docstrings have quotes on separate lines.
 (setq python-fill-docstring-style (quote onetwo))
+
+;; Fix for pdb (see
+;; https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy
+;; )
+(setq gud-pdb-command-name "python -m pdb")
