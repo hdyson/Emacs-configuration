@@ -1,11 +1,13 @@
 ;;; Set desktop mode for restoring buffers across emacs sessions
 (desktop-save-mode 1)
+(setq desktop-path "~/.emacs.d/desktop" "~/.emacs.d/" "~")
 
 ;; Setup some defaults - put point on variable and do C-h v to find
 ;; appropriate docs quickly.
 (setq-default fill-column 78)
 (setq default-major-mode 'text-mode)
 (tool-bar-mode 0)
+(column-number-mode t)
 
 ;; Show file path in frame title
 (setq-default frame-title-format "%b (%f)")
@@ -17,6 +19,9 @@
 ;;     `C-x n w' is widen
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page   'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)
 
 ;;ido mode to accelerate changing file/buffer.  See http://www.cua.dk/ido.html
 (require 'ido)
@@ -25,6 +30,15 @@
 (setq ido-use-filename-at-point 'guess)
 (ido-mode t)
 
+;; Some default settings could be better.  There's probably more in
+;; config/init.el that are still being experimented with.
+
+(setq confirm-kill-emacs (quote yes-or-no-p))
+;; These three disable attempts to make emacs more windows-like:
+(setq cua-enable-cua-keys nil)
+(setq shift-select-mode nil)
+(setq delete-selection-mode nil)
+
 ;; Performs programme mode indent prior to aligning.
 (setq align-indent-before-aligning t)
 ;; Delete all white space on backspace
@@ -32,39 +46,31 @@
 ;; Parenthesis matching
 (setq blink-matching-paren-on-screen t)
 (show-paren-mode 1)
-
-;; searches ignore case
-(setq case-fold-search t)
+(setq require-final-newline t)
 ;; Fill puts two spaces after a colon
 (setq colon-double-space t)
 ;; comment region comments out empty lines
 (setq comment-empty-lines t)
 ;; Put 1 space between comment markers and code/text.
-(setq comment-padding 1)
+(setq comment-padding t)
 ;; Comments can span lines
 (setq comment-style (quote multi-line))
-
-
-;; Disable overwriting selection.
-(setq delete-selection-mode nil)
-
 ;; Indent inserts spaces always; never tabs.
 (setq indent-tabs-mode nil)
 ;; ctrl-k kills whole line, including newline character.
 (setq kill-whole-line t)
+;; ctrl-k yanks read only text (DWIM rather than error)
+(setq kill-read-only-ok t)
 ;; Highlight all search matches
 (setq lazy-highlight-max-at-a-time nil)
+;; searches ignore case
+(setq case-fold-search t)
+(setq show-trailing-whitespace t)
 
 ;; Config for recentf
 (require 'recentf)
-
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-
 ;; enable recent files mode.
 (recentf-mode t)
-
 ;; 50 files ought to be enough.
 (setq recentf-max-saved-items 50)
 
@@ -76,8 +82,10 @@
     (message "Aborting")))
 ;; End config for recentf
 
-;; Launch eshell at startup:
+;; Avoid having to type '|' whenver starting ediff:
+(setq ediff-merge-split-window-function (quote split-window-vertically))
 
+;; Launch eshell at startup:
 (add-hook 'emacs-startup-hook 'eshell)
 
 ;; Fix for emacs 24 -> 25 migration issue
