@@ -29,11 +29,17 @@
 (global-set-key [S-f9]  'flycheck-previous-error)
 
 (global-set-key [C-tab] 'other-window)
+(global-set-key [C-iso-lefttab] 'other-window)
 (global-set-key [M-delete] 'kill-word)
 
 (global-set-key [insert] 'abbrev-mode)
-(global-set-key [f12] 'abbrev-mode)
+(global-set-key [f12] 'recompile)
 
 (global-set-key [print]  'ps-print-buffer-with-faces)
 
 (global-set-key "\M-?" 'hippie-expand)
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)

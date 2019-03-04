@@ -62,11 +62,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(compilation-auto-jump-to-first-error t)
  '(confirm-kill-emacs (quote yes-or-no-p))
  '(cua-enable-cua-keys nil)
  '(custom-enabled-themes (quote (tango-dark)))
  '(desktop-path (quote ("~/.emacs.d/desktop" "~/.emacs.d/" "~")))
  '(ediff-merge-split-window-function (quote split-window-vertically))
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(elpy-test-pytest-runner-command
+   (quote
+    ("/home/h05/hdyson/miniconda2/envs/ants_dev/bin/py.test")))
+ '(elpy-test-runner (quote elpy-test-pytest-runner))
  '(eshell-buffer-maximum-lines 10240)
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-cmpl-cycle-completions nil)
@@ -74,12 +80,16 @@
  '(eshell-modules-list
    (quote
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra)))
- '(flycheck-disabled-checkers (quote (python-pylint)))
+ '(flycheck-disabled-checkers nil)
  '(ido-mode (quote both) nil (ido))
  '(kill-read-only-ok t)
  '(kill-whole-line t)
+ '(minimap-automatically-delete-window nil)
+ '(minimap-minimum-width 15)
+ '(minimap-width-fraction 0.05)
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages (quote (iedit py-autopep8 flycheck elpy)))
+ '(printer-name "SecurePrint-Colour")
  '(python-check-command (executable-find "flake8"))
  '(python-fill-docstring-style (quote onetwo))
  '(python-shell-first-prompt-hook
@@ -106,8 +116,7 @@
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))
  '(tab-stop-list (quote (4 8)))
- '(tool-bar-mode nil)
- '(truncate-lines t))
+ '(tool-bar-mode nil))
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
@@ -116,4 +125,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(minimap-font-face ((t (:height 15 :family "DejaVu Sans Mono")))))
