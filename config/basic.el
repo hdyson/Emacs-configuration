@@ -54,7 +54,7 @@
 ;; comment region comments out empty lines
 (setq comment-empty-lines t)
 ;; Put 1 space between comment markers and code/text.
-(setq comment-padding t)
+(setq comment-padding 1)
 ;; Comments can span lines
 (setq comment-style (quote multi-line))
 ;; Indent inserts spaces always; never tabs.
