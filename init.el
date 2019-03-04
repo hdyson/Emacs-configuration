@@ -1,3 +1,9 @@
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defvar myConfigFiles
   '("~/.emacs.d/config/packages.el"
     "~/.emacs.d/config/basic.el"
@@ -24,6 +30,9 @@
    (quote
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra)))
  '(mouse-avoidance-mode nil nil (avoid))
+ '(package-selected-packages
+   (quote
+    (which-key py-autopep8 multiple-cursors markdown-mode magit iedit flycheck elpy dashboard)))
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))
