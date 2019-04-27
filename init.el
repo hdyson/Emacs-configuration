@@ -24,6 +24,9 @@
    (quote
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra)))
  '(mouse-avoidance-mode nil nil (avoid))
+ '(package-selected-packages
+   (quote
+    (which-key multiple-cursors markdown-mode magit iedit py-autopep8 flycheck elpy)))
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))
