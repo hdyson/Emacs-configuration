@@ -16,10 +16,11 @@ explicitly set it in a configuration file.
 ** Package setup
 
 I prefer stable versions of packages rather than risk having things break
-unexepectedly, so I hook into the stable package repository.  The
+unexepectedly, so I hook into the stable MELPA package repository.  The
 configuration here is pretty self-explanatory:
 
 #+BEGIN_SRC emacs-lisp
+(require 'package)
 (add-to-list 'package-archives
 	     '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
@@ -29,7 +30,9 @@ configuration here is pretty self-explanatory:
 
 This configures the [[https://elpy.readthedocs.io/en/latest/index.html][elpy package for python development]]. 
 
-There will be more to follow here...
+Following will fail if you have not installed the elpy package, see [[https://hdyson.dev/emacs/2019/04/01/Setting-up-Emacs-for-python-development.html][one method here]].
+
+There will be more to follow here (including removing the need to manually install elpy).
 
 #+BEGIN_SRC emacs-lisp
 (elpy-enable)
