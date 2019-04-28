@@ -1,0 +1,62 @@
+* Configuration
+
+This is the file with all the actual configuration in it - the =init.el= is
+just a bit of boilerplate to load this file.
+
+At the moment, I'm breaking this up into sections within a single =.org= file.
+As this expands, it's likely I'll end up breaking off some of the longer
+sections into their own configuration file.
+
+Where practical, I prefer to configure things in explicit configuration files
+rather than through the =customize= interface.  I like =customize= for
+experimenting with options but once I commit to an option, it's preferable to
+explicitly set it in a configuration file.
+
+
+** Package setup
+
+I prefer stable versions of packages rather than risk having things break
+unexepectedly, so I hook into the stable package repository.  The
+configuration here is pretty self-explanatory:
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives
+	     '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(package-initialize)
+#+END_SRC
+
+** elpy setup
+
+This configures the [[https://elpy.readthedocs.io/en/latest/index.html][elpy package for python development]]. 
+
+There will be more to follow here...
+
+#+BEGIN_SRC emacs-lisp
+(elpy-enable)
+#+END_SRC
+
+** Blog setup
+
+As described on my [[https://hdyson.dev/emacs/2019/03/20/Creating-blogpost-within-emacs.html][blog]], here's a little function to complete the necessary
+path name and metadata for a jekyll blog post automatically.
+
+#+BEGIN_SRC emacs-lisp
+(defun create-blogpost (x)
+  "Create a new blogpost."
+  (interactive "sPost title: ")
+  (let ((file-date (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
+	(file-title (s-replace " " "-" x))
+	(post-date (shell-command-to-string (concat "echo -n $(date " (shell-quote-argument "+%Y-%m-%d %H:%M:%S") ")")))
+	(post-title x)
+	filename filepath)
+    (setf filename (concat file-date "-" file-title ".md"))
+    (setf filepath (concat "/Users/hdyson/Documents/Repos/Git/hdyson.github.io/_posts" filename))
+    (write-region (concat "---
+layout: default
+title:  " post-title "
+date:   " post-date "
+categories: emacs
+---
+") 0 filepath t)
+    (find-file filepath)))
+#+END_SRC    
