@@ -13,7 +13,7 @@
 	(post-title x)
 	filename filepath)
     (setf filename (concat file-date "-" file-title ".md"))
-    (setf filepath (concat "/path/to/local/_posts/directory" filename))
+    (setf filepath (concat "/Users/hdyson/Documents/Repos/Git/hdyson.github.io/_posts" filename))
     (write-region (concat "---
 layout: default
 title:  " post-title "
