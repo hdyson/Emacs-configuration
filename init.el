@@ -1,24 +1,29 @@
-(add-to-list 'package-archives
-	     '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(package-initialize)
+;; This init file is taken from
+;; https://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 
-(elpy-enable)
+;;; init.el --- Where all the magic begins
+;;
+;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
+;; embedded in literate Org-mode files.
 
-(defun create-blogpost (x)
-  "Create a new blogpost."
-  (interactive "sPost title: ")
-  (let ((file-date (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
-	(file-title (s-replace " " "-" x))
-	(post-date (shell-command-to-string (concat "echo -n $(date " (shell-quote-argument "+%Y-%m-%d %H:%M:%S") ")")))
-	(post-title x)
-	filename filepath)
-    (setf filename (concat file-date "-" file-title ".md"))
-    (setf filepath (concat "/Users/hdyson/Documents/Repos/Git/hdyson.github.io/_posts" filename))
-    (write-region (concat "---
-layout: default
-title:  " post-title "
-date:   " post-date "
-categories: emacs
----
-") 0 filepath t)
-    (find-file filepath)))
+;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
+(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
+
+(let* ((org-dir (expand-file-name
+                 "lisp" (expand-file-name
+                         "org" (expand-file-name
+                                "src" dotfiles-dir))))
+       (org-contrib-dir (expand-file-name
+                         "lisp" (expand-file-name
+                                 "contrib" (expand-file-name
+                                            ".." org-dir))))
+       (load-path (append (list org-dir org-contrib-dir)
+                          (or load-path nil))))
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle))
+
+;; load up all literate org-mode files in this directory
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+
+;;; init.el ends here
