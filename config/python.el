@@ -22,9 +22,8 @@
 (add-to-list 'python-shell-completion-native-disabled-interpreters
              "jupyter")
 
-
 (setq python-check-command (executable-find "flake8"))
-;; onetwo means sinlge line docstring has quotes in same line; multi-line
+;; onetwo means single line docstring has quotes in same line; multi-line
 ;; docstrings have quotes on separate lines.
 (setq python-fill-docstring-style (quote onetwo))
 
