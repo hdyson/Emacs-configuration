@@ -32,7 +32,7 @@
 (global-set-key [M-delete] 'kill-word)
 
 (global-set-key [insert] 'abbrev-mode)
-(global-set-key [f12] 'abbrev-mode)
+(global-set-key [f12] 'recompile)
 
 (global-set-key [print]  'ps-print-buffer-with-faces)
 
