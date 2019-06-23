@@ -19,6 +19,8 @@
     markdown-mode  ;; https://jblevins.org/projects/markdown-mode/
     multiple-cursors  ;; https://github.com/magnars/multiple-cursors.el
     which-key  ;; https://github.com/justbur/emacs-which-key
+    gif-screencast  ;; https://gitlab.com/ambrevar/emacs-gif-screencast
+    keycast  ;; https://github.com/tarsius/keycast
     ))
 
 (mapc #'(lambda (package)
@@ -26,3 +28,14 @@
       (package-install package)))
       myPackages)
 
+;; package configs::
+
+(with-eval-after-load 'gif-screencast
+  (define-key gif-screencast-mode-map (kbd "<f10>") 'gif-screencast-toggle-pause)
+  (define-key gif-screencast-mode-map (kbd "<f11>") 'gif-screencast-stop)
+  (setq gif-screencast-args '("-x")) ;; To shut up the shutter sound of `screencapture' (see `gif-screencast-command').
+  (setq gif-screencast-cropping-program "mogrify") ;; Optional: Used to crop the capture to the Emacs frame.
+  (setq gif-screencast-capture-format "ppm") ;; Optional: Required to crop captured images.
+)
+
+(keycast-mode t)

@@ -26,7 +26,7 @@
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages
    (quote
-    (which-key multiple-cursors markdown-mode magit iedit py-autopep8 flycheck elpy)))
+    (keycast gif-screencast which-key multiple-cursors markdown-mode magit iedit py-autopep8 flycheck elpy)))
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))
