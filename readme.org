@@ -182,37 +182,42 @@ some and preventing them being seen by emacs):
 usually the easiest f keys to use (least likely to fat finger), so use those
 for the most common functions.
 #+BEGIN_SRC emacs-lisp
-(global-set-key [S-insert] 'insert-file)
+  (global-set-key [S-insert] 'insert-file)
 
-(global-set-key [f1]    'find-file-at-point)
-(global-set-key [f9]    'find-file-at-point)
-(global-set-key [pause] 'toggle-read-only)
-(global-set-key [f10] 'toggle-read-only)
+  (global-set-key [f1]    'find-file-at-point)
+  (global-set-key [f9]    'find-file-at-point)
+  (global-set-key [pause] 'toggle-read-only)
+  (global-set-key [f10] 'toggle-read-only)
 
-(global-set-key [f5]  'bookmark-set-no-overwrite)
-(global-set-key [f8]  'bookmark-jump)
+  (global-set-key [f5]  'bookmark-set-no-overwrite)
+  (global-set-key [f8]  'bookmark-jump)
 
-(global-set-key [f6]  'execute-extended-command)
-(global-set-key [f7]  'buffer-menu)
+  (global-set-key [f6]  'execute-extended-command)
+  (global-set-key [f7]  'buffer-menu)
 
-(global-set-key [f9]  'flycheck-next-error)
-(global-set-key [f10]  'flycheck-mode)
-(global-set-key [S-f9]  'flycheck-previous-error)
+  (global-set-key [f9]  'flycheck-next-error)
+  (global-set-key [f10]  'flycheck-mode)
+  (global-set-key [S-f9]  'flycheck-previous-error)
 
-(global-set-key [C-tab] 'other-window)  ;; Collision with org-mode - need to sort out how to handle this
-(global-set-key [M-delete] 'kill-word)
+  (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
+					  ;; need to sort out how to handle this
+					  ;; (it's muscle memory now, probably
+					  ;; need to set alternative for
+					  ;; org-mode and tolerate it for
+					  ;; magit).
+  (global-set-key [M-delete] 'kill-word)
 
-(global-set-key [insert] 'abbrev-mode)
-(global-set-key [f12] 'recompile)
+  (global-set-key [insert] 'abbrev-mode)
+  (global-set-key [f12] 'recompile)
 
-(global-set-key [print]  'ps-print-buffer-with-faces)
+  (global-set-key [print]  'ps-print-buffer-with-faces)
 
-(global-set-key "\M-?" 'hippie-expand)
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
-(global-set-key (kbd "C-x C-c") 'save-some-buffers)
+  (global-set-key "\M-?" 'hippie-expand)
+  ;; get rid of `find-file-read-only' and replace it with something
+  ;; more useful.
+  (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+  ;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
+  (global-set-key (kbd "C-x C-c") 'save-some-buffers)
 #+END_SRC
 
 ** Multiple cursors
@@ -243,7 +248,6 @@ for the most common functions.
 (setq python-check-command (executable-find "flake8"))
 (setq python-fill-docstring-style (quote onetwo))
 
-;; 
 (setq gud-pdb-command-name "python -m pdb")
 
 #+END_SRC
