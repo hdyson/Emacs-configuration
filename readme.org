@@ -1,3 +1,6 @@
+Notice that ~init.el~ translates this org-mode file into an emacs lisp file
+when emacs is started, and then loads the emacs lisp file.
+
 * Package configuration
 
 Package configuration typically needs to be first - if it's not, any
