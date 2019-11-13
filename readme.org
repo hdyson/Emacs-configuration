@@ -230,8 +230,7 @@ for the most common functions.
 
 ** Basic elpy config
 
- + Replaces the default flymake with the superior (more responsive)
-flycheck.
+ + Replaces the default flymake with the superior (more responsive) flycheck.
  + ~python-fill-docstring-style~ of ~onetwo~ means single line docstring has
   quotes in same line; multi-line docstrings have quotes on separate lines.
  + Fix for [[https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy][pdb]]
