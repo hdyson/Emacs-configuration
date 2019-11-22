@@ -1,0 +1,281 @@
+Notice that ~init.el~ translates this org-mode file into an emacs lisp file
+when emacs is started, and then loads the emacs lisp file.
+
+* Package configuration
+
+Package configuration typically needs to be first - if it's not, any
+configuration (e.g. keybindings) that needs a package to have been loaded will
+cause an error when starting emacs.
+
+** Initial setup
+
+Initialises the package interface and defines the stable source (I don't see
+the point in using the bleeding edge).
+
+#+BEGIN_SRC emacs-lisp
+
+(require 'package) 
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+#+END_SRC
+
+** Define packages to install
+
+1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~ and
+   ~iedit~ are optional dependencies for elpy.
+2. [[https://github.com/magit/][magit]] - a /usable/ git interface.
+3. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
+4. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
+5. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
+
+#+BEGIN_SRC emacs-lisp
+(defvar myPackages
+  '(elpy
+    flycheck
+    py-autopep8
+    iedit
+    magit
+    markdown-mode
+    multiple-cursors
+    which-key
+    ))
+#+END_SRC
+
+** Install packages
+
+For each of the previous packages, install them if they're not already
+installed.  Note there's no checking if installed versions are out of date -
+updates need to be done manually:
+
+#+BEGIN_SRC emacs-lisp
+(mapc #'(lambda (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+      myPackages)
+#+END_SRC
+
+* Basic configuration
+
+** Desktop mode for restoring buffers across emacs sessions
+#+BEGIN_SRC emacs-lisp
+(desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/desktop" "~/.emacs.d/" "~"))
+#+END_SRC
+
+** Quality of life improvements
+
+Put point on variable and do C-h v to find appropriate docs quickly.
+#+BEGIN_SRC emacs-lisp
+  (setq-default fill-column 78)
+  (setq default-major-mode 'text-mode)
+  (tool-bar-mode 0)
+  (column-number-mode t)
+  (fset 'yes-or-no-p 'y-or-n-p) ;; change all prompts to y or n
+  (setq-default frame-title-format "%b (%f)") ;; Show file path in frame title
+  (setq confirm-kill-emacs (quote yes-or-no-p))
+  ;; These three disable attempts to make emacs more windows-like:
+  (setq cua-enable-cua-keys nil)
+  (setq shift-select-mode nil)
+  (setq delete-selection-mode nil)
+  (setq align-indent-before-aligning t)
+  (setq backward-delete-char-untabify-method t)
+  (setq blink-matching-paren-on-screen t)
+  (show-paren-mode 1)
+  (setq require-final-newline t)
+  (setq colon-double-space t)
+  (setq comment-empty-lines t)
+  (setq comment-padding 1) ;; Put 1 space between comment markers and code/text.
+  (setq comment-style (quote multi-line))
+  (setq indent-tabs-mode nil) ;; Indent inserts spaces always; never tabs.
+  (setq kill-whole-line t)
+  (setq kill-read-only-ok t) ;; ctrl-k yanks read only text (DWIM rather than error)
+  (setq lazy-highlight-max-at-a-time nil) ;; Highlight all search matches
+  (setq case-fold-search t)
+  (setq show-trailing-whitespace t)
+  (require 'recentf)
+  (recentf-mode t)
+  (setq recentf-max-saved-items 50)
+  (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
+#+END_SRC
+
+** Useful commands that are disabled by default
+
+Working on parts of text:
+ + ~C-x n n~ is narrow-to-region
+ + ~C-x n p~ is narrow-to-page
+ + ~C-x n w~ is widen
+
+#+BEGIN_SRC emacs-lisp
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)
+#+END_SRC
+
+** ido mode
+
+~ido~ massively improves finding files and buffers.  It's an emacs built in so
+use the normal help for more info.
+#+BEGIN_SRC emacs-lisp
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(setq ido-use-filename-at-point 'guess)
+(ido-mode t)
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+#+END_SRC
+
+** which-key config
+
+Sets up minibuffer pop up to complete partially entered key combinations.
+
+#+BEGIN_SRC emacs-lisp
+(which-key-setup-minibuffer)
+(which-key-mode)
+#+END_SRC
+
+** Update fixes
+Fix for emacs 24 -> 25 migration issue.  Can probably be removed now?
+#+BEGIN_SRC emacs-lisp
+(modify-all-frames-parameters '((horizontal-scroll-bars . nil)))
+#+END_SRC
+
+* Additional functions
+
+Generate a temporary buffer.  Very useful when combined with eshells
+capability to redirect output to a buffer (e.g. ~ncdump -h >C-c M-b~).
+#+BEGIN_SRC emacs-lisp
+(defun generate-temp-buffer ()
+  (interactive)
+  (switch-to-buffer (make-temp-name "temp-")))
+#+END_SRC
+
+* Global keyboard shortcuts
+
+Global key bindings (some duplicates to account for OS X/MacOS intercepting
+some and preventing them being seen by emacs):
+
+** Better navigation
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key [M-left]  'backward-sentence)
+(global-set-key [M-right] 'forward-sentence)
+(global-set-key [M-up]    'beginning-of-defun)
+(global-set-key [M-down]  'end-of-defun)
+
+(global-set-key [C-left]  'backward-word)
+(global-set-key [C-right] 'forward-word)
+(global-set-key [C-up]    'beginning-of-line)
+(global-set-key [C-down]  'end-of-line)
+#+END_SRC
+
+** Convenience functions.  
+~f1~, ~f4~, ~f5~, ~f8~, ~f9~ and ~f12~ are
+usually the easiest f keys to use (least likely to fat finger), so use those
+for the most common functions.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key [S-insert] 'insert-file)
+
+  (global-set-key [f1]    'find-file-at-point)
+  (global-set-key [f9]    'find-file-at-point)
+  (global-set-key [pause] 'toggle-read-only)
+  (global-set-key [f10] 'toggle-read-only)
+
+  (global-set-key [f5]  'bookmark-set-no-overwrite)
+  (global-set-key [f8]  'bookmark-jump)
+
+  (global-set-key [f6]  'execute-extended-command)
+  (global-set-key [f7]  'buffer-menu)
+
+  (global-set-key [f9]  'flycheck-next-error)
+  (global-set-key [f10]  'flycheck-mode)
+  (global-set-key [S-f9]  'flycheck-previous-error)
+
+  (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
+					  ;; need to sort out how to handle this
+					  ;; (it's muscle memory now, probably
+					  ;; need to set alternative for
+					  ;; org-mode and tolerate it for
+					  ;; magit).
+  (global-set-key [M-delete] 'kill-word)
+
+  (global-set-key [insert] 'abbrev-mode)
+  (global-set-key [f12] 'recompile)
+
+  (global-set-key [print]  'ps-print-buffer-with-faces)
+
+  (global-set-key "\M-?" 'hippie-expand)
+  ;; get rid of `find-file-read-only' and replace it with something
+  ;; more useful.
+  (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+  ;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
+  (global-set-key (kbd "C-x C-c") 'save-some-buffers)
+#+END_SRC
+
+** Multiple cursors
+
+#+BEGIN_SRC emacs-lisp
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
+(global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+#+END_SRC
+
+* Python configuration
+
+** Basic elpy config
+
+ + Replaces the default flymake with the superior (more responsive) flycheck.
+ + ~python-fill-docstring-style~ of ~onetwo~ means single line docstring has
+  quotes in same line; multi-line docstrings have quotes on separate lines.
+ + Fix for [[https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy][pdb]]
+#+BEGIN_SRC emacs-lisp
+(elpy-enable)
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(setq python-check-command (executable-find "flake8"))
+(setq python-fill-docstring-style (quote onetwo))
+
+(setq gud-pdb-command-name "python -m pdb")
+
+#+END_SRC
+
+** Autoformat and shell configuration
+
+Use either the ipython config or the jupyter config - comment/uncomment as
+appropriate
+
+#+BEGIN_SRC emacs-lisp
+;; enable autopep8 formatting on save
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;; Use ipython for shell
+;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+;; (setq python-shell-interpreter "ipython"
+;;      python-shell-interpreter-args "-i --simple-prompt")
+
+;; Use jupyter for shell
+;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
+
+#+END_SRC
