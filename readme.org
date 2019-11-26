@@ -14,7 +14,7 @@ the point in using the bleeding edge).
 
 #+BEGIN_SRC emacs-lisp
 
-(require 'package) 
+(require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
@@ -180,7 +180,7 @@ some and preventing them being seen by emacs):
 (global-set-key [C-down]  'end-of-line)
 #+END_SRC
 
-** Convenience functions.  
+** Convenience functions.
 ~f1~, ~f4~, ~f5~, ~f8~, ~f9~ and ~f12~ are
 usually the easiest f keys to use (least likely to fat finger), so use those
 for the most common functions.
@@ -203,11 +203,13 @@ for the most common functions.
   (global-set-key [S-f9]  'flycheck-previous-error)
 
   (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
-					  ;; need to sort out how to handle this
-					  ;; (it's muscle memory now, probably
-					  ;; need to set alternative for
-					  ;; org-mode and tolerate it for
-					  ;; magit).
+                                          ;; need to sort out how to handle this
+                                          ;; (it's muscle memory now, probably
+                                          ;; need to set alternative for
+                                          ;; org-mode and tolerate it for
+                                          ;; magit).
+  (global-set-key [C-iso-lefttab] 'other-window)  ;; Attempted fix
+                                                  ;; (ctrl-shift-tab) for above
   (global-set-key [M-delete] 'kill-word)
 
   (global-set-key [insert] 'abbrev-mode)
@@ -221,6 +223,12 @@ for the most common functions.
   (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
   ;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
   (global-set-key (kbd "C-x C-c") 'save-some-buffers)
+
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+
 #+END_SRC
 
 ** Multiple cursors
@@ -234,6 +242,17 @@ for the most common functions.
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 #+END_SRC
 
+* eshell configuration
+
+#+BEGIN_SRC emacs-lisp
+
+(setq eshell-buffer-maximum-lines 10240)
+(setq eshell-cmpl-compare-entry-function (quote string-lessp))
+(setq eshell-cmpl-cycle-completions nil)
+
+#+END_SRC
+
+
 * Python configuration
 
 ** Basic elpy config
@@ -242,6 +261,7 @@ for the most common functions.
  + ~python-fill-docstring-style~ of ~onetwo~ means single line docstring has
   quotes in same line; multi-line docstrings have quotes on separate lines.
  + Fix for [[https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy][pdb]]
+ + Ignore a few more directories
 #+BEGIN_SRC emacs-lisp
 (elpy-enable)
 (when (require 'flycheck nil t)
@@ -252,8 +272,13 @@ for the most common functions.
 (setq python-fill-docstring-style (quote onetwo))
 
 (setq gud-pdb-command-name "python -m pdb")
+(setq elpy-project-ignored-directories
+   (quote
+    (".tox" "build" "dist" ".cask" ".ipynb_checkpoints" ".pytest_cache")))
 
 #+END_SRC
+
+
 
 ** Autoformat and shell configuration
 
@@ -261,21 +286,58 @@ Use either the ipython config or the jupyter config - comment/uncomment as
 appropriate
 
 #+BEGIN_SRC emacs-lisp
-;; enable autopep8 formatting on save
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  ;; enable autopep8 formatting on save
+  (require 'py-autopep8)
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;; Use ipython for shell
-;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-;; (setq python-shell-interpreter "ipython"
-;;      python-shell-interpreter-args "-i --simple-prompt")
+  ;; Use ipython for shell
+  ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+  ;; Only one python-shell-interpreter-args line should be uncommented
+  (setq python-shell-interpreter "ipython"
+     python-shell-interpreter-args "-i --simple-prompt")
 
-;; Use jupyter for shell
-;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter")
+  ;; Use jupyter for shell
+  ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+  ;; (setq python-shell-interpreter "jupyter"
+  ;;       python-shell-interpreter-args "console --simple-prompt"
+  ;;       python-shell-prompt-detect-failure-warning nil)
+  ;; (add-to-list 'python-shell-completion-native-disabled-interpreters
+  ;;              "jupyter")
 
+#+END_SRC
+
+* Org mode configuration
+
+Setup a few extra TODO states:
+
+#+BEGIN_SRC emacs-lisp
+;; org-mode config
+(setq org-todo-keywords
+    '((sequence "TODO" "VERIFY" "DELAYED" "|" "DONE" "CANCELLED")))
+#+END_SRC
+
+Enable python code blocks in org-babel:
+
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)))
+#+END_SRC
+
+QoL improvements:
+
+#+BEGIN_SRC emacs-lisp
+ (setq org-return-follows-link t)
+ (setq org-src-fontify-natively t)
+#+END_SRC
+
+* local configuration
+
+If there's a local configuration file, load it.  Use this for e.g. printer
+settings.
+
+#+BEGIN_SRC emacs-lisp
+(if (file-readable-p "~/.emacs.d/config/local.el")
+       (load "~/.emacs.d/config/local.el" nil t))
 #+END_SRC

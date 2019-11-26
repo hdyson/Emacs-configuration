@@ -2,3 +2,8 @@
 /eshell/history
 /eshell/lastdir
 /elpa
+/config/local.el
+local-lisp
+recentf
+auto-save-list
+*~

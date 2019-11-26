@@ -1,2 +1,11 @@
+alias xo xdg-open nil
 alias ff find-file $1
 alias ffo find-file-other-window $1
+alias sd svn status >#<buffer *svn_diff*>; svn diff >>#<buffer *svn_diff*>
+alias depyc find . -name "*.pyc" -delete
+alias sl svn log --stop-on-copy
+alias sq squeue -o "%.18i %S %.9P %.8j %.8u %.2t %.10M %.6D %R" -u hdyson
+alias d dired $1
+alias hg history | grep "$1"
+alias st svn status -u
+alias sd svn status >#<buffer *svn_diff*>; svn diff >>#<buffer *svn_diff*>
