@@ -16,7 +16,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
- '(elpy-test-pytest-runner-command (quote ("pytest")))
+ '(elpy-test-pytest-runner-command
+   (quote
+    ("/Users/hdyson/anaconda3/envs/ants_env/bin/pytest")))
  '(elpy-test-runner (quote elpy-test-pytest-runner))
  '(eshell-buffer-maximum-lines 10240)
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
@@ -28,7 +30,7 @@
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages
    (quote
-    (keycast gif-screencast which-key multiple-cursors markdown-mode magit iedit py-autopep8 flycheck elpy)))
+    (cargo flycheck-rust ob-rust rust-mode keycast gif-screencast which-key multiple-cursors markdown-mode magit iedit py-autopep8 flycheck elpy)))
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))

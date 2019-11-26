@@ -11,7 +11,7 @@
           (post-title x)
           filename filepath)
       (setf filename (concat file-date "-" file-title ".md"))
-      (setf filepath (concat "~/Documents/Current_Projects/Blog_Stuff/GithubPages/hdyson.github.io/_posts/" filename))
+      (setf filepath (concat "~/Documents/Repos/Git/hdyson.github.io/_posts/" filename))
       (write-region (concat "---
 layout: default
 title:  " post-title "

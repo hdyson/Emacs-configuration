@@ -31,3 +31,9 @@
 ;; https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy
 ;; )
 (setq gud-pdb-command-name "python -m pdb")
+
+
+;; Setup org-babel to permit python code blocks
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
