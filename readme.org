@@ -9,14 +9,14 @@ cause an error when starting emacs.
 
 ** Initial setup
 
-Initialises the package interface and defines the stable source (I don't see
-the point in using the bleeding edge).
+Initialises the package interface and enable MELPA packages.  [[https://www.reddit.com/r/emacs/comments/etikbz/speaking_as_a_package_maintainer_please_do_not/][This reddit]] post
+convinced me to use normal MELPA rather than stable.
 
 #+BEGIN_SRC emacs-lisp
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -293,16 +293,16 @@ appropriate
   ;; Use ipython for shell
   ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
   ;; Only one python-shell-interpreter-args line should be uncommented
-  (setq python-shell-interpreter "ipython"
-     python-shell-interpreter-args "-i --simple-prompt")
+  ;; (setq python-shell-interpreter "ipython"
+  ;;    python-shell-interpreter-args "-i --simple-prompt")
 
   ;; Use jupyter for shell
   ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-  ;; (setq python-shell-interpreter "jupyter"
-  ;;       python-shell-interpreter-args "console --simple-prompt"
-  ;;       python-shell-prompt-detect-failure-warning nil)
-  ;; (add-to-list 'python-shell-completion-native-disabled-interpreters
-  ;;              "jupyter")
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+	       "jupyter")
 
 #+END_SRC
 
@@ -322,6 +322,7 @@ Enable python code blocks in org-babel:
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
+   (shell . t)
    (python . t)))
 #+END_SRC
 
