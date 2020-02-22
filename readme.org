@@ -26,8 +26,8 @@ convinced me to use normal MELPA rather than stable.
 
 ** Define packages to install
 
-1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~ and
-   ~iedit~ are optional dependencies for elpy.
+1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~,
+   ~iedit~, ~projectile~, and ~flx-ido~ are optional dependencies for elpy.
 2. [[https://github.com/magit/][magit]] - a /usable/ git interface.
 3. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
 4. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
@@ -43,6 +43,8 @@ convinced me to use normal MELPA rather than stable.
     markdown-mode
     multiple-cursors
     which-key
+    projectile
+    flx-ido
     ))
 #+END_SRC
 
@@ -144,6 +146,19 @@ Sets up minibuffer pop up to complete partially entered key combinations.
 (which-key-setup-minibuffer)
 (which-key-mode)
 #+END_SRC
+
+** projectile configuration
+
+ [[https://docs.projectile.mx/en/latest/][Projectile]] introduces per-project commands to emacs, see the [[https://docs.projectile.mx/en/latest/usage/#basic-usage][basic
+ instructions]] for details.  ~s-p~ binds to "Print" on MacOS, so need the
+ alternative shortcut to avoid this one being grabbed by the OS.
+
+ #+BEGIN_SRC emacs-lisp
+ (require 'projectile)
+ (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+ (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+ (projectile-mode +1)
+ #+END_SRC
 
 ** Update fixes
 Fix for emacs 24 -> 25 migration issue.  Can probably be removed now?
@@ -251,7 +266,6 @@ for the most common functions.
 (setq eshell-cmpl-cycle-completions nil)
 
 #+END_SRC
-
 
 * Python configuration
 
