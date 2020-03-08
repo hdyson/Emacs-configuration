@@ -32,6 +32,9 @@ convinced me to use normal MELPA rather than stable.
 3. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
 4. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
 5. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
+6. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
+   (particularly useful under MacOS).
+7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
 
 #+BEGIN_SRC emacs-lisp
 (defvar myPackages
@@ -45,6 +48,8 @@ convinced me to use normal MELPA rather than stable.
     which-key
     projectile
     flx-ido
+    exec-path-from-shell
+    dash
     ))
 #+END_SRC
 
@@ -102,6 +107,7 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (require 'recentf)
   (recentf-mode t)
   (setq recentf-max-saved-items 50)
+  (savehist-mode t)  ;; Persistent minibuffer history
   (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
 #+END_SRC
 
@@ -265,6 +271,43 @@ for the most common functions.
 (setq eshell-cmpl-compare-entry-function (quote string-lessp))
 (setq eshell-cmpl-cycle-completions nil)
 
+#+END_SRC
+
+* shell configuration
+
+While ~eshell~ is ideal for interactive use, occasionally a more conventional
+shell is needed.  From [[https://emacs.stackexchange.com/a/9952][stack exchange]], there's three steps to improve ~shell~
+buffers in emacs.
+
+** Initialise the shell history from the existing bash shell history:
+
+#+BEGIN_SRC emacs-lisp
+(exec-path-from-shell-initialize)
+(exec-path-from-shell-copy-env "HISTFILE")
+#+END_SRC
+
+** Add comint history to shell mode:
+
+Other modes can be added as appropriate.  May be worth doing for python?
+
+#+BEGIN_SRC emacs-lisp
+(defun turn-on-comint-history (history-file)
+          (setq comint-input-ring-file-name history-file)
+          (comint-read-input-ring 'silent))
+
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (turn-on-comint-history (getenv "HISTFILE"))))
+#+END_SRC
+
+** Update history on exit:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'kill-buffer-hook #'comint-write-input-ring)
+(add-hook 'kill-emacs-hook
+          (lambda ()
+            (--each (buffer-list)
+              (with-current-buffer it (comint-write-input-ring)))))
 #+END_SRC
 
 * Python configuration
