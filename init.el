@@ -98,9 +98,6 @@
      ("A" "#+ASCII: " "")
      ("i" "#+INDEX: ?" "#+INDEX: ?")
      ("I" "#+INCLUDE: %file ?" "<include file=%file markup=\"?\">"))))
- '(package-selected-packages
-   (quote
-    (which-key py-autopep8 multiple-cursors markdown-mode magit iedit flycheck elpy dashboard)))
  '(revert-without-query (quote (".*\\.err" ".*\\.out")))
  '(switch-to-buffer-in-dedicated-window (quote prompt))
  '(tab-always-indent (quote complete))

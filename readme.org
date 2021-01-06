@@ -1,6 +1,8 @@
 Notice that ~init.el~ translates this org-mode file into an emacs lisp file
 when emacs is started, and then loads the emacs lisp file.
 
+A quick test addition
+
 * Package configuration
 
 Package configuration typically needs to be first - if it's not, any
@@ -9,14 +11,14 @@ cause an error when starting emacs.
 
 ** Initial setup
 
-Initialises the package interface and defines the stable source (I don't see
-the point in using the bleeding edge).
+Initialises the package interface and enable MELPA packages.  [[https://www.reddit.com/r/emacs/comments/etikbz/speaking_as_a_package_maintainer_please_do_not/][This reddit]] post
+convinced me to use normal MELPA rather than stable.
 
 #+BEGIN_SRC emacs-lisp
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -26,12 +28,15 @@ the point in using the bleeding edge).
 
 ** Define packages to install
 
-1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~ and
-   ~iedit~ are optional dependencies for elpy.
+1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~,
+   ~iedit~, ~projectile~, and ~flx-ido~ are optional dependencies for elpy.
 2. [[https://github.com/magit/][magit]] - a /usable/ git interface.
 3. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
 4. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
 5. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
+6. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
+   (particularly useful under MacOS).
+7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
 
 #+BEGIN_SRC emacs-lisp
 (defvar myPackages
@@ -43,6 +48,10 @@ the point in using the bleeding edge).
     markdown-mode
     multiple-cursors
     which-key
+    projectile
+    flx-ido
+    exec-path-from-shell
+    dash
     ))
 #+END_SRC
 
@@ -100,6 +109,7 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (require 'recentf)
   (recentf-mode t)
   (setq recentf-max-saved-items 50)
+  (savehist-mode t)  ;; Persistent minibuffer history
   (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
 #+END_SRC
 
@@ -144,6 +154,19 @@ Sets up minibuffer pop up to complete partially entered key combinations.
 (which-key-setup-minibuffer)
 (which-key-mode)
 #+END_SRC
+
+** projectile configuration
+
+ [[https://docs.projectile.mx/en/latest/][Projectile]] introduces per-project commands to emacs, see the [[https://docs.projectile.mx/en/latest/usage/#basic-usage][basic
+ instructions]] for details.  ~s-p~ binds to "Print" on MacOS, so need the
+ alternative shortcut to avoid this one being grabbed by the OS.
+
+ #+BEGIN_SRC emacs-lisp
+ (require 'projectile)
+ (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+ (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+ (projectile-mode +1)
+ #+END_SRC
 
 ** Update fixes
 Fix for emacs 24 -> 25 migration issue.  Can probably be removed now?
@@ -252,6 +275,42 @@ for the most common functions.
 
 #+END_SRC
 
+* shell configuration
+
+While ~eshell~ is ideal for interactive use, occasionally a more conventional
+shell is needed.  From [[https://emacs.stackexchange.com/a/9952][stack exchange]], there's three steps to improve ~shell~
+buffers in emacs.
+
+** Initialise the shell history from the existing bash shell history:
+
+#+BEGIN_SRC emacs-lisp
+(exec-path-from-shell-initialize)
+(exec-path-from-shell-copy-env "HISTFILE")
+#+END_SRC
+
+** Add comint history to shell mode:
+
+Other modes can be added as appropriate.  May be worth doing for python?
+
+#+BEGIN_SRC emacs-lisp
+(defun turn-on-comint-history (history-file)
+          (setq comint-input-ring-file-name history-file)
+          (comint-read-input-ring 'silent))
+
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (turn-on-comint-history (getenv "HISTFILE"))))
+#+END_SRC
+
+** Update history on exit:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'kill-buffer-hook #'comint-write-input-ring)
+(add-hook 'kill-emacs-hook
+          (lambda ()
+            (--each (buffer-list)
+              (with-current-buffer it (comint-write-input-ring)))))
+#+END_SRC
 
 * Python configuration
 
@@ -293,16 +352,16 @@ appropriate
   ;; Use ipython for shell
   ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
   ;; Only one python-shell-interpreter-args line should be uncommented
-  (setq python-shell-interpreter "ipython"
-     python-shell-interpreter-args "-i --simple-prompt")
+  ;; (setq python-shell-interpreter "ipython"
+  ;;    python-shell-interpreter-args "-i --simple-prompt")
 
   ;; Use jupyter for shell
   ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-  ;; (setq python-shell-interpreter "jupyter"
-  ;;       python-shell-interpreter-args "console --simple-prompt"
-  ;;       python-shell-prompt-detect-failure-warning nil)
-  ;; (add-to-list 'python-shell-completion-native-disabled-interpreters
-  ;;              "jupyter")
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+	       "jupyter")
 
 #+END_SRC
 
@@ -322,6 +381,7 @@ Enable python code blocks in org-babel:
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
+   (shell . t)
    (python . t)))
 #+END_SRC
 
