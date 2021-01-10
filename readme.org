@@ -35,6 +35,9 @@ convinced me to use normal MELPA rather than stable.
 6. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
    (particularly useful under MacOS).
 7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
+8. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
+9. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
+10. [[https://github.com/hlissner/emacs-doom-themes][doom-themes]] - more eye candy
 
 #+BEGIN_SRC emacs-lisp
 (defvar myPackages
@@ -50,6 +53,9 @@ convinced me to use normal MELPA rather than stable.
     flx-ido
     exec-path-from-shell
     dash
+    doom-modeline
+    all-the-icons
+    doom-themes
     ))
 #+END_SRC
 
@@ -109,6 +115,8 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (setq recentf-max-saved-items 50)
   (savehist-mode t)  ;; Persistent minibuffer history
   (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
+  (setq visible-bell t)  ;; flash rather than beep
+  (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
 #+END_SRC
 
 ** Useful commands that are disabled by default
@@ -390,6 +398,34 @@ QoL improvements:
  (setq org-src-fontify-natively t)
 #+END_SRC
 
+Enable tab to expand snippets like ~<s~:
+
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+* Compilation buffer tweaks
+
+** Colour output from compilation
+
+Compile commands have been producing output in colour for some time now.  But
+the emacs compilation buffer tends to display escape characters rather than
+output in colour.  This fixes that ([[https://emacs.stackexchange.com/a/8137][source]]):
+
+#+begin_src emacs-lisp
+(require 'ansi-color)
+(defun my/ansi-colorize-buffer ()
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+#+end_src
+
+** Automatically scroll to end of compilation buffer
+
+#+begin_src emacs-lisp
+(setq compilation-scroll-output t)
+#+end_src
+
 * local configuration
 
 If there's a local configuration file, load it.  Use this for e.g. printer
@@ -399,3 +435,26 @@ settings.
 (if (file-readable-p "~/.emacs.d/config/local.el")
        (load "~/.emacs.d/config/local.el" nil t))
 #+END_SRC
+
+* Experimental eye candy
+
+** Doom modeline
+
+Still needs to be customised to suit, via [[https://seagle0128.github.io/doom-modeline/#customize][the instructions]].
+
+#+begin_src emacs-lisp
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+#+end_src
+
+** all the icons
+
+Note: this needs ~M-x all-the-icons-install-fonts~ to be run once within emacs.
+
+#+begin_src emacs-lisp
+(require 'all-the-icons)
+#+end_src
+
+** Doom theme
+
+Again, still needs to be [[https://github.com/hlissner/emacs-doom-themes#themes-customization][customised]].  Themes are available via usual ~customize-themes~ interface.
