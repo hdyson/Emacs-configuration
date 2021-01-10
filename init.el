@@ -36,10 +36,7 @@
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist (quote (("." . "~/.emacs.backups"))))
  '(custom-enabled-themes (quote (tango-dark)))
- '(elpy-test-pytest-runner-command
-   (quote
-    ("/Users/hdyson/anaconda3/envs/ants_env/bin/pytest")))
- '(elpy-test-runner (quote elpy-test-pytest-runner))
+ '(elpy-rpc-python-command "python3")
  '(eshell-buffer-maximum-lines 10240)
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-cmpl-cycle-completions nil)
