@@ -400,7 +400,8 @@ QoL improvements:
  (setq org-src-fontify-natively t)
 #+END_SRC
 
-Enable tab to expand snippets like ~<s~:
+Enable tab to expand snippets like ~<s~ (as of org 9.2, preferred method is
+~C-c C-,~, but muscle memory...):
 
 #+begin_src emacs-lisp
 (require 'org-tempo)
