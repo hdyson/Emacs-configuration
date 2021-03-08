@@ -26,6 +26,28 @@ convinced me to use normal MELPA rather than stable.
 
 #+END_SRC
 
+And a little experimenting with ~use-package~ and ~ivy~:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         :map ivy-switch-buffer-map
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+#+end_src
+
 ** Define packages to install
 
 1. [[https://github.com/jorgenschaefer/elpy][elpy]] - essential for python development.  ~flycheck~, ~py-autopep8~,
@@ -134,24 +156,6 @@ Working on parts of text:
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
-#+END_SRC
-
-** ido mode
-
-~ido~ massively improves finding files and buffers.  It's an emacs built in so
-use the normal help for more info.
-#+BEGIN_SRC emacs-lisp
-(require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-use-filename-at-point 'guess)
-(ido-mode t)
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
 #+END_SRC
 
 ** which-key config
