@@ -465,3 +465,24 @@ Note: this needs ~M-x all-the-icons-install-fonts~ to be run once within emacs.
 ** Doom theme
 
 Again, still needs to be [[https://github.com/hlissner/emacs-doom-themes#themes-customization][customised]].  Themes are available via usual ~customize-themes~ interface.
+
+** Ligatures
+
+Pycharm has some pretty ligature support.  Let's see if we can do similar in the one true editor.  The built-in ~prettify-symbols~ mode looks to be a good place to start.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this blog]], we have some basic support:
+#+begin_src emacs-lisp
+(global-prettify-symbols-mode 1)
+
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (mapc (lambda (pair) (push pair prettify-symbols-alist))
+         '(
+	    ("lambda" . 955)
+            ("->" . 8594)
+            ("=>" . 8658)
+            ("map" . 8614)
+            ("<=" . 8804)
+            (">=" . 8805)
+            ("<-" . 8592)
+            ("!=" . 8800)))))
+#+end_src
