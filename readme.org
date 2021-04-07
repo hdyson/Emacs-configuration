@@ -478,7 +478,8 @@ Pycharm has some pretty ligature support.  Let's see if we can do similar in the
 	    ("lambda" . 955)
             ("->" . 8594)
             ("=>" . 8658)
-            ("map" . 8614)
+;; I don't find the symbol for ~map~ to be more readable, so let's disable it:
+;;            ("map" . 8614)
             ("<=" . 8804)
             (">=" . 8805)
             ("<-" . 8592)
