@@ -466,22 +466,34 @@ Again, still needs to be [[https://github.com/hlissner/emacs-doom-themes#themes-
 
 ** Ligatures
 
-Pycharm has some pretty ligature support.  Let's see if we can do similar in the one true editor.  The built-in ~prettify-symbols~ mode looks to be a good place to start.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this blog]], we have some basic support:
-#+begin_src emacs-lisp
-(global-prettify-symbols-mode 1)
+Pycharm has some pretty ligature support.  Let's see if we can do similar in
+the one true editor.  The built-in ~prettify-symbols~ mode looks to be a good
+place to start.  By default, this replaces ~lambda~, ~and~, and ~or~ with
+symbols (check the buffer local variable ~prettify-symbols-alist~ for the
+current value in a buffer).  Let's add a few more symbols.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this aliquote
+blog post]], there's a few suitable suggestions:
 
-(add-hook
- 'python-mode-hook
- (lambda ()
-   (mapc (lambda (pair) (push pair prettify-symbols-alist))
-         '(
-	    ("lambda" . 955)
-            ("->" . 8594)
-            ("=>" . 8658)
-;; I don't find the symbol for ~map~ to be more readable, so let's disable it:
-;;            ("map" . 8614)
-            ("<=" . 8804)
-            (">=" . 8805)
-            ("<-" . 8592)
-            ("!=" . 8800)))))
+#+begin_src emacs-lisp
+    (defun add-python-mode-symbols ()
+	    (mapc (lambda (pair) (push pair prettify-symbols-alist))
+	     '(
+		("->" . 8594)
+		("=>" . 8658)
+		("<=" . 8804)
+		(">=" . 8805)
+		("<-" . 8592)
+		("!=" . 8800)
+		)))
+
+    (add-hook 'python-mode-hook (lambda ()
+				  (add-python-mode-symbols)
+				  (prettify-symbols-mode t)
+				  ))
 #+end_src
+
+[[http://www.modernemacs.com/post/prettify-mode/][This modern emacs blog post]] describes using ~describe-char~ and ~insert-char~
+to work out the number needed for a particular symbol, and the use of ~mapc~
+for adding the symbols in a sensible manner.  I've opted to isolate the
+definitions in a function to make it a little more transparent what is being
+added to the python hook.  I think (but haven't confirmed) that the symbols
+list needs to be defined before enabling ~prettify-symbols-mode~.
