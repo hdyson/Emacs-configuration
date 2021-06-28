@@ -460,7 +460,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   (setq doom-modeline-bar-width 4)
 
   ;; Whether to use hud instead of default bar. It's only respected in GUI.
-  (defcustom doom-modeline-hud nil)
+  (setq doom-modeline-hud t)
 
   ;; The limit of the window width.
   ;; If `window-width' is smaller than the limit, some information won't be displayed.
@@ -473,7 +473,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   ;; e.g. `projectile' doesn't handle symlink folders well, while `project' is unable
   ;; to hanle sub-projects.
   ;; You can specify one if you encounter the issue.
-  (setq doom-modeline-project-detection 'project)
+  (setq doom-modeline-project-detection 'projectile)
 
   ;; Determines the style used by `doom-modeline-buffer-file-name'.
   ;;
@@ -494,7 +494,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   ;; If you are experiencing the laggy issue, especially while editing remote files
   ;; with tramp, please try `file-name' style.
   ;; Please refer to https://github.com/bbatsov/projectile/issues/657.
-  (setq doom-modeline-buffer-file-name-style 'auto)
+  (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
 
   ;; Whether display icons in the mode-line.
   ;; While using the server mode in GUI, should set the value explicitly.
@@ -515,13 +515,13 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   (setq doom-modeline-buffer-modification-icon t)
 
   ;; Whether to use unicode as a fallback (instead of ASCII) when not using icons.
-  (setq doom-modeline-unicode-fallback nil)
+  (setq doom-modeline-unicode-fallback t)
 
   ;; Whether display the minor modes in the mode-line.
   (setq doom-modeline-minor-modes nil)
 
   ;; If non-nil, a word count will be added to the selection-info modeline segment.
-  (setq doom-modeline-enable-word-count nil)
+  (setq doom-modeline-enable-word-count t)
 
   ;; Major modes in which to display word count continuously.
   ;; Also applies to any derived modes. Respects `doom-modeline-enable-word-count'.
@@ -533,10 +533,10 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   (setq doom-modeline-buffer-encoding t)
 
   ;; Whether display the indentation information.
-  (setq doom-modeline-indent-info nil)
+  (setq doom-modeline-indent-info t)
 
   ;; If non-nil, only display one number for checker information if applicable.
-  (setq doom-modeline-checker-simple-format t)
+  (setq doom-modeline-checker-simple-format nil)
 
   ;; The maximum number displayed for notifications.
   (setq doom-modeline-number-limit 99)
@@ -573,16 +573,16 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   (setq doom-modeline-mu4e nil)
 
   ;; Whether display the gnus notifications.
-  (setq doom-modeline-gnus t)
+  (setq doom-modeline-gnus nil)
 
   ;; Wheter gnus should automatically be updated and how often (set to 0 or smaller than 0 to disable)
-  (setq doom-modeline-gnus-timer 2)
+  (setq doom-modeline-gnus-timer 0)
 
   ;; Wheter groups should be excludede when gnus automatically being updated.
   (setq doom-modeline-gnus-excluded-groups '("dummy.group"))
 
   ;; Whether display the IRC notifications. It requires `circe' or `erc' package.
-  (setq doom-modeline-irc t)
+  (setq doom-modeline-irc nil)
 
   ;; Function to stylize the irc buffer names.
   (setq doom-modeline-irc-stylize 'identity)
@@ -590,15 +590,15 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   ;; Whether display the environment version.
   (setq doom-modeline-env-version t)
   ;; Or for individual languages
-  (setq doom-modeline-env-enable-python t)
-  (setq doom-modeline-env-enable-ruby t)
-  (setq doom-modeline-env-enable-perl t)
-  (setq doom-modeline-env-enable-go t)
-  (setq doom-modeline-env-enable-elixir t)
-  (setq doom-modeline-env-enable-rust t)
+  ;; (setq doom-modeline-env-enable-python t)
+  ;; (setq doom-modeline-env-enable-ruby t)
+  ;; (setq doom-modeline-env-enable-perl t)
+  ;; (setq doom-modeline-env-enable-go t)
+  ;; (setq doom-modeline-env-enable-elixir t)
+  ;; (setq doom-modeline-env-enable-rust t)
 
   ;; Change the executables to use for the language version string
-  (setq doom-modeline-env-python-executable "python") ; or `python-shell-interpreter'
+  (setq doom-modeline-env-python-executable python-shell-interpreter) ; or `python-shell-interpreter'
   (setq doom-modeline-env-ruby-executable "ruby")
   (setq doom-modeline-env-perl-executable "perl")
   (setq doom-modeline-env-go-executable "go")
