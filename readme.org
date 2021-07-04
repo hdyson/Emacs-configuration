@@ -59,7 +59,6 @@ And a little experimenting with ~use-package~ and ~ivy~:
 7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
 8. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
 9. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
-10. [[https://github.com/hlissner/emacs-doom-themes][doom-themes]] - more eye candy
 
 #+BEGIN_SRC emacs-lisp
 (defvar myPackages
@@ -77,7 +76,6 @@ And a little experimenting with ~use-package~ and ~ivy~:
     dash
     doom-modeline
     all-the-icons
-    doom-themes
     ))
 #+END_SRC
 
@@ -620,10 +618,6 @@ Note: this needs ~M-x all-the-icons-install-fonts~ to be run once within emacs.
 #+begin_src emacs-lisp
 (require 'all-the-icons)
 #+end_src
-
-** Doom theme
-
-Again, still needs to be [[https://github.com/hlissner/emacs-doom-themes#themes-customization][customised]].  Themes are available via usual ~customize-themes~ interface.
 
 ** Ligatures
 
