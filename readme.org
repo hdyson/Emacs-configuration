@@ -331,6 +331,10 @@ Other modes can be added as appropriate.  May be worth doing for python?
  + Ignore a few more directories
 #+BEGIN_SRC emacs-lisp
   (elpy-enable)
+
+  (setq elpy-rpc-python-command "python3")
+  (setq elpy-rpc-virtualenv-path "~/.emacs_venv")
+
   (when (require 'flycheck nil t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
     (add-hook 'elpy-mode-hook 'flycheck-mode))
