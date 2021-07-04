@@ -330,20 +330,25 @@ Other modes can be added as appropriate.  May be worth doing for python?
  + Fix for [[https://github.com/jorgenschaefer/elpy/wiki/FAQ#q-how-do-i-use-pdb-with-elpy][pdb]]
  + Ignore a few more directories
 #+BEGIN_SRC emacs-lisp
-(elpy-enable)
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+  (elpy-enable)
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-(setq python-check-command (executable-find "flake8"))
-(setq python-fill-docstring-style (quote onetwo))
+  (setq python-check-command (executable-find "flake8"))
+  (setq python-fill-docstring-style (quote onetwo))
 
-(setq gud-pdb-command-name "python -m pdb")
-(setq elpy-project-ignored-directories
-   (quote
-    (".tox" "build" "dist" ".cask" ".ipynb_checkpoints" ".pytest_cache")))
+  (setq gud-pdb-command-name "python -m pdb")
+  (setq elpy-project-ignored-directories
+     (quote
+      (".tox" "build" "dist" ".cask" ".ipynb_checkpoints" ".pytest_cache")))
 
-#+END_SRC
+  ;; Current elpy (1.35.0) defines same key to code formatting and extracting a
+  ;; function with jedi.  Let's disambiguate these:
+  (define-key elpy-refactor-map (kbd "f") 'elpy-format-code)
+  (define-key elpy-refactor-map (kbd "e") 'elpy-refactor-extract-function)
+
+#+end_SRC
 
 
 
