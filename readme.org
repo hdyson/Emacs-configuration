@@ -27,23 +27,24 @@ convinced me to use normal MELPA rather than stable.
 And a little experimenting with ~use-package~ and ~ivy~:
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure t)
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         :map ivy-switch-buffer-map
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+  (use-package swiper :ensure t)
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+	   :map ivy-minibuffer-map
+	   ("TAB" . ivy-alt-done)
+	   ("C-l" . ivy-alt-done)
+	   :map ivy-switch-buffer-map
+	   ("C-l" . ivy-done)
+	   ("C-d" . ivy-switch-buffer-kill)
+	   :map ivy-reverse-i-search-map
+	   ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode t))
 #+end_src
 
 ** Define packages to install
@@ -137,6 +138,13 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
   (setq visible-bell t)  ;; flash rather than beep
   (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
+  (backup-directory-alist '(("." . "~/.emacs.backups")))  ;; backup files to stand alone directory
+  (custom-enabled-themes '(tango-dark))
+  (revert-without-query '(".*\\.err" ".*\\.out"))
+  (switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
+  (tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
+  (tab-stop-list '(8 16)))  ;; make tabs stupidly wide to better identify accidental tabs
+
 #+END_SRC
 
 ** Useful commands that are disabled by default
@@ -346,6 +354,9 @@ Other modes can be added as appropriate.  May be worth doing for python?
   (setq elpy-project-ignored-directories
      (quote
       (".tox" "build" "dist" ".cask" ".ipynb_checkpoints" ".pytest_cache")))
+
+  (elpy-test-pytest-runner-command '("python" "-m" "pytest"))
+  (elpy-test-runner 'elpy-test-pytest-runner)
 
   ;; Current elpy (1.35.0) defines same key to code formatting and extracting a
   ;; function with jedi.  Let's disambiguate these:
