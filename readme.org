@@ -60,24 +60,28 @@ And a little experimenting with ~use-package~ and ~ivy~:
 7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
 8. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
 9. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
+10. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
+11. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
 
 #+BEGIN_SRC emacs-lisp
-(defvar myPackages
-  '(elpy
-    flycheck
-    py-autopep8
-    iedit
-    magit
-    markdown-mode
-    multiple-cursors
-    which-key
-    projectile
-    flx-ido
-    exec-path-from-shell
-    dash
-    doom-modeline
-    all-the-icons
-    ))
+  (defvar myPackages
+    '(elpy
+      flycheck
+      py-autopep8
+      iedit
+      magit
+      markdown-mode
+      multiple-cursors
+      which-key
+      projectile
+      flx-ido
+      exec-path-from-shell
+      dash
+      doom-modeline
+      all-the-icons
+      emojify
+      discover
+      ))
 #+END_SRC
 
 ** Install packages
