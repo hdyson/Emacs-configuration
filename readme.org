@@ -60,24 +60,30 @@ And a little experimenting with ~use-package~ and ~ivy~:
 7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
 8. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
 9. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
+10. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
+11. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
+12. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
 
 #+BEGIN_SRC emacs-lisp
-(defvar myPackages
-  '(elpy
-    flycheck
-    py-autopep8
-    iedit
-    magit
-    markdown-mode
-    multiple-cursors
-    which-key
-    projectile
-    flx-ido
-    exec-path-from-shell
-    dash
-    doom-modeline
-    all-the-icons
-    ))
+  (defvar myPackages
+    '(elpy
+      flycheck
+      py-autopep8
+      iedit
+      magit
+      markdown-mode
+      multiple-cursors
+      which-key
+      projectile
+      flx-ido
+      exec-path-from-shell
+      dash
+      doom-modeline
+      all-the-icons
+      emojify
+      discover
+      mastodon
+      ))
 #+END_SRC
 
 ** Install packages
@@ -672,3 +678,23 @@ for adding the symbols in a sensible manner.  I've opted to isolate the
 definitions in a function to make it a little more transparent what is being
 added to the python hook.  I think (but haven't confirmed) that the symbols
 list needs to be defined before enabling ~prettify-symbols-mode~.
+
+* Mastodon configuration
+
+Configuration for mastodon within emacs.  I've opted to install the optional
+~emojify~ and ~discover~ dependencies, of which ~discover~ needs to be
+explicitly enabled:
+
+#+begin_src emacs-lisp
+  (require 'mastodon-discover)
+  (with-eval-after-load 'mastodon (mastodon-discover))
+#+end_src
+
+** User configuration
+
+This section configures server and username:
+
+#+begin_src emacs-lisp
+  (setq mastodon-instance-url "https://mstdn.social"
+	mastodon-active-user "Honeydew")
+#+end_src
