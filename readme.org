@@ -138,12 +138,12 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
   (setq visible-bell t)  ;; flash rather than beep
   (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
-  (backup-directory-alist '(("." . "~/.emacs.backups")))  ;; backup files to stand alone directory
-  (custom-enabled-themes '(tango-dark))
-  (revert-without-query '(".*\\.err" ".*\\.out"))
-  (switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
-  (tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
-  (tab-stop-list '(8 16)))  ;; make tabs stupidly wide to better identify accidental tabs
+  (setq backup-directory-alist '(("." . "~/.emacs.backups")))  ;; backup files to stand alone directory
+  (setq custom-enabled-themes '(tango-dark))
+  (setq revert-without-query '(".*\\.err" ".*\\.out"))
+  (setq switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
+  (setq tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
+  (setq tab-stop-list '(8 16))  ;; make tabs stupidly wide to better identify accidental tabs
 
 #+END_SRC
 
@@ -181,7 +181,7 @@ Sets up minibuffer pop up to complete partially entered key combinations.
  (require 'projectile)
  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
- (projectile-mode +1)
+ (projectile-mode t)
  #+END_SRC
 
 ** Update fixes
@@ -355,8 +355,8 @@ Other modes can be added as appropriate.  May be worth doing for python?
      (quote
       (".tox" "build" "dist" ".cask" ".ipynb_checkpoints" ".pytest_cache")))
 
-  (elpy-test-pytest-runner-command '("python" "-m" "pytest"))
-  (elpy-test-runner 'elpy-test-pytest-runner)
+  (setq elpy-test-pytest-runner-command '("python" "-m" "pytest"))
+  (setq elpy-test-runner 'elpy-test-pytest-runner)
 
   ;; Current elpy (1.35.0) defines same key to code formatting and extracting a
   ;; function with jedi.  Let's disambiguate these:
@@ -373,23 +373,23 @@ Use either the ipython config or the jupyter config - comment/uncomment as
 appropriate
 
 #+BEGIN_SRC emacs-lisp
-  ;; enable autopep8 formatting on save
-  (require 'py-autopep8)
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+    ;; enable autopep8 formatting on save
+    (require 'py-autopep8)
+    (add-hook 'elpy-mode-hook 'py-autopep8-mode)
 
-  ;; Use ipython for shell
-  ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-  ;; Only one python-shell-interpreter-args line should be uncommented
-  ;; (setq python-shell-interpreter "ipython"
-  ;;    python-shell-interpreter-args "-i --simple-prompt")
+    ;; Use ipython for shell
+    ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+    ;; Only one python-shell-interpreter-args line should be uncommented
+    ;; (setq python-shell-interpreter "ipython"
+    ;;    python-shell-interpreter-args "-i --simple-prompt")
 
-  ;; Use jupyter for shell
-  ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
-  (setq python-shell-interpreter "jupyter"
-	python-shell-interpreter-args "console --simple-prompt"
-	python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters
-	       "jupyter")
+    ;; Use jupyter for shell
+    ;; See: https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+    (setq python-shell-interpreter "jupyter"
+	  python-shell-interpreter-args "console --simple-prompt"
+	  python-shell-prompt-detect-failure-warning nil)
+    (add-to-list 'python-shell-completion-native-disabled-interpreters
+		 "jupyter")
 
 #+END_SRC
 
