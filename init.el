@@ -47,7 +47,7 @@
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra))
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages
-   '(mastodon which-key use-package swiper py-autopep8 projectile multiple-cursors markdown-mode magit iedit flycheck flx-ido exec-path-from-shell elpy doom-modeline all-the-icons))
+   '(lingva mastodon which-key use-package swiper py-autopep8 projectile multiple-cursors markdown-mode magit iedit flycheck flx-ido exec-path-from-shell elpy doom-modeline all-the-icons))
  '(revert-without-query '(".*\\.err" ".*\\.out"))
  '(switch-to-buffer-in-dedicated-window 'prompt)
  '(tab-always-indent 'complete)

@@ -63,6 +63,7 @@ And a little experimenting with ~use-package~ and ~ivy~:
 10. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
 11. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
 12. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
+13. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
 
 #+BEGIN_SRC emacs-lisp
   (defvar myPackages
@@ -83,6 +84,7 @@ And a little experimenting with ~use-package~ and ~ivy~:
       emojify
       discover
       mastodon
+      lingva
       ))
 #+END_SRC
 
