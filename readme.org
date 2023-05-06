@@ -32,20 +32,21 @@ convinced me to use normal MELPA rather than stable.
 
 ** Define packages to install
 
-2. [[https://github.com/magit/][magit]] - a /usable/ git interface.
-3. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
-4. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
-5. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
-6. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
+1. [[https://github.com/magit/][magit]] - a /usable/ git interface.
+2. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
+3. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
+4. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
+5. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
    (particularly useful under MacOS).
-7. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
-8. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
-9. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
-10. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
-11. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
-12. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
-13. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
-14. company - complete anything
+6. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
+7. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
+8. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
+9. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
+10. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
+11. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
+12. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
+13. company - complete anything
+14. pyvenv - python venv support
 
 #+BEGIN_SRC emacs-lisp
   (defvar myPackages
@@ -63,6 +64,7 @@ convinced me to use normal MELPA rather than stable.
       mastodon
       lingva
       company
+      pyvenv
       ))
 #+END_SRC
 
@@ -364,6 +366,17 @@ Desired functionality:
  + code folding
  + debugging?
 
+** Python mode config
+
+Some initial config for the interpreter:
+
+#+begin_src emacs-lisp
+    (add-hook 'python-mode-hook (lambda ()
+      (setq python-shell-interpreter "python3")  ;; TODO: ipython/jupyter console
+      (setq python-shell-completion-native-enable nil)
+      ))
+#+end_src
+
 ** Code completion
 
 Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
@@ -401,6 +414,8 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
   (setq gc-cons-threshold 100000000)
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
 #+end_src
+
+This does need to have an LSP server installed in a virtual env - tested with pylsp: https://github.com/python-lsp/python-lsp-server
 
 * Org mode configuration
 
