@@ -392,14 +392,19 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
 	   ;; if you want which-key integration
 	   (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
+  ;; TODO: good keyboard shortcut for ~lsp-remace-
 
   ;; optionally
   (use-package lsp-ui :commands lsp-ui-mode)
+  ;; TODO: lsp-ui-doc-show is called when mouse pointer hovers.  Need sensible
+  ;; keyboard shortcut to replicate via keyboard.
+
   ;; if you are helm user
-  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
   ;; if you are ivy user
   (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-  ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+  ;; TODO: good keyboard shortcut for ~lsp-treemacs-symbols-
 
   ;; optionally if you want to use debugger
   ;; (use-package dap-mode)
