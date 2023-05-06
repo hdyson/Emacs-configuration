@@ -30,29 +30,6 @@ convinced me to use normal MELPA rather than stable.
 
 #+END_SRC
 
-And a little experimenting with ~use-package~ and ~ivy~:
-
-#+begin_src emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-  (require 'use-package)
-  (setq use-package-always-ensure t)
-  (use-package swiper :ensure t)
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-	   :map ivy-minibuffer-map
-	   ("TAB" . ivy-alt-done)
-	   ("C-l" . ivy-alt-done)
-	   :map ivy-switch-buffer-map
-	   ("C-l" . ivy-done)
-	   ("C-d" . ivy-switch-buffer-kill)
-	   :map ivy-reverse-i-search-map
-	   ("C-d" . ivy-reverse-i-search-kill))
-    :config
-    (ivy-mode t))
-#+end_src
-
 ** Define packages to install
 
 2. [[https://github.com/magit/][magit]] - a /usable/ git interface.
@@ -68,23 +45,25 @@ And a little experimenting with ~use-package~ and ~ivy~:
 11. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
 12. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
 13. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
+14. company - complete anything
 
 #+BEGIN_SRC emacs-lisp
-    (defvar myPackages
-      '(
-	magit
-	markdown-mode
-	multiple-cursors
-	which-key
-	exec-path-from-shell
-	dash
-	doom-modeline
-	all-the-icons
-	emojify
-	discover
-	mastodon
-	lingva
-	))
+  (defvar myPackages
+    '(
+      magit
+      markdown-mode
+      multiple-cursors
+      which-key
+      exec-path-from-shell
+      dash
+      doom-modeline
+      all-the-icons
+      emojify
+      discover
+      mastodon
+      lingva
+      company
+      ))
 #+END_SRC
 
 ** Install packages
@@ -99,6 +78,44 @@ updates need to be done manually:
       (package-install package)))
       myPackages)
 #+END_SRC
+
+** use-package config
+
+As an alternative to the above, can use ~use-package~ to install and configure packages.
+
+Initial setup for ~use-package~:
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+end_src
+
+Then a little experimenting with ~ivy~:
+
+#+begin_src emacs-lisp
+  (use-package swiper :ensure t)
+  (use-package ivy
+    :diminish  ;; diminish keeps mode out of modeline
+    :bind (("C-s" . swiper)  ;; bind edits keymap
+	   :map ivy-minibuffer-map
+	   ("TAB" . ivy-alt-done)
+	   ("C-l" . ivy-alt-done)
+	   :map ivy-switch-buffer-map
+	   ("C-l" . ivy-done)
+	   ("C-d" . ivy-switch-buffer-kill)
+	   :map ivy-reverse-i-search-map
+	   ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode t))
+#+end_src
+
+Now show keystrokes when enabled via ~clm/toggle-command-log-buffer~ (~global-command-log-mode~ is useful too):
+
+#+begin_src emacs-lisp
+  (use-package command-log-mode)
+#+end_src
 
 * Basic configuration
 
@@ -149,9 +166,9 @@ Put point on variable and do C-h v to find appropriate docs quickly.
   (setq custom-enabled-themes '(tango-dark))
   (setq revert-without-query '(".*\\.err" ".*\\.out"))
   (setq switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
+
   (setq tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
   (setq tab-stop-list '(8 16))  ;; make tabs stupidly wide to better identify accidental tabs
-
 #+END_SRC
 
 ** Useful commands that are disabled by default
@@ -193,6 +210,15 @@ capability to redirect output to a buffer (e.g. ~ncdump -h >C-c M-b~).
   (interactive)
   (switch-to-buffer (make-temp-name "temp-")))
 #+END_SRC
+
+* Completion interface using company
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-minimum-prefix-length 1
+      company-idle-delay 0.0) ;; default is 0.2
+
+#+end_src
 
 * Global keyboard shortcuts
 
@@ -337,6 +363,44 @@ Desired functionality:
  + syntax checking
  + code folding
  + debugging?
+
+** Code completion
+
+Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setq lsp-keymap-prefix "s-l")
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	   (python-mode . lsp)
+	   (f90-mode . lsp)
+	   ;; if you want which-key integration
+	   (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+  ;; optionally
+  (use-package lsp-ui :commands lsp-ui-mode)
+  ;; if you are helm user
+  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  ;; if you are ivy user
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+  ;; optionally if you want to use debugger
+  ;; (use-package dap-mode)
+  ;; (use-package dap-python) to load the dap adapter for your language
+
+  ;; optional if you want which-key integration
+  (use-package which-key
+      :config
+      (which-key-mode))
+
+  ;; performance tuning
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+#+end_src
 
 * Org mode configuration
 
