@@ -1,7 +1,7 @@
 Notice that ~init.el~ translates this org-mode file into an emacs lisp file
 when emacs is started, and then loads the emacs lisp file.
 
-* Bugfix for emacs < 29 and Macos:
+* Bugfix for emacs < 29 and MacOS:
 
 #+begin_src emacs-lisp
 (add-to-list 'image-types 'svg)
@@ -400,7 +400,6 @@ to configure that yet).  For example ~./venv/bin/python -m pytest .~.
 
 There's no other configuration needed here, it works out of the box.
 
-
 ** Code completion
 
 Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
@@ -431,8 +430,10 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
   ;; TODO: good keyboard shortcut for ~lsp-treemacs-symbols-
 
   ;; optionally if you want to use debugger
-  ;; (use-package dap-mode)
-  ;; (use-package dap-python) to load the dap adapter for your language
+  (use-package dap-mode)
+  ;; debugger for python:
+  (setq dap-python-debugger 'debugpy)   ;; Needs ~pip install debugpy~ in the venv being used.
+  (require 'dap-python)
 
   ;; optional if you want which-key integration
   (use-package which-key
@@ -445,6 +446,10 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
 #+end_src
 
 This does need to have an LSP server installed in a virtual env - tested with pylsp: https://github.com/python-lsp/python-lsp-server
+
+** Debugging with dap
+
+Use ~dap-toggle-breakpoint~ to add a breakpoint.  Use ~dap-debug~ to run.  ~dap-debug-edit-template~ to specify more complex options.
 
 * Org mode configuration
 
