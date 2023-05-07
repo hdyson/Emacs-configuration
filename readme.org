@@ -497,7 +497,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
 #+begin_src emacs-lisp
   ;; Initial requirements
   (require 'doom-modeline)
-  (doom-modeline-mode 1)
+;;  (doom-modeline-mode 1)
 
   ;; How tall the mode-line should be. It's only respected in GUI.
   ;; If the actual char height is larger, it respects the actual height.
