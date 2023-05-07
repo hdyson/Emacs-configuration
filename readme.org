@@ -47,6 +47,7 @@ convinced me to use normal MELPA rather than stable.
 12. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
 13. company - complete anything
 14. pyvenv - python venv support
+15. yasnippet - snippet support
 
 #+BEGIN_SRC emacs-lisp
   (defvar myPackages
@@ -65,6 +66,7 @@ convinced me to use normal MELPA rather than stable.
       lingva
       company
       pyvenv
+      yasnippet
       ))
 #+END_SRC
 
@@ -459,6 +461,15 @@ This does need to have an LSP server installed in a virtual env - tested with py
 ** Debugging with dap
 
 Use ~dap-toggle-breakpoint~ to add a breakpoint.  Use ~dap-debug~ to run.  ~dap-debug-edit-template~ to specify more complex options.
+
+** yasnippet config
+
+Use ~yas-new-snippet~ to define a template to be expanded.
+
+#+begin_src emacs-lisp
+(require 'yasnippet)
+(yas-global-mode 1)
+#+end_src
 
 * Org mode configuration
 
