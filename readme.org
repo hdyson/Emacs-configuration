@@ -119,6 +119,18 @@ Now show keystrokes when enabled via ~clm/toggle-command-log-buffer~ (~global-co
   (use-package command-log-mode)
 #+end_src
 
+And project configuration via projectile:
+
+#+begin_src emacs-lisp
+  (use-package projectile
+  :ensure t
+  :init
+  (projectile-mode t)
+  :bind (:map projectile-mode-map
+              ("M-p" . projectile-command-map) ;; "s-p" clashes with MacOS print.
+              ("C-c p" . projectile-command-map)))
+#+end_src
+
 * Basic configuration
 
 ** Desktop mode for restoring buffers across emacs sessions
@@ -377,6 +389,18 @@ Some initial config for the interpreter:
       ))
 #+end_src
 
+** pytest config
+
+Needs pytest to be in the python venv.
+
+Use ~projectile-test-project~, and use ~recompile~ for repeating the test.
+
+Compile command needs to include path to venv python (I don't see a good way
+to configure that yet).  For example ~./venv/bin/python -m pytest .~.
+
+There's no other configuration needed here, it works out of the box.
+
+
 ** Code completion
 
 Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
@@ -387,8 +411,8 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     (setq lsp-keymap-prefix "s-l")
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	   (python-mode . lsp)
-	   (f90-mode . lsp)
+	   (python-mode . lsp)  ;; needs ~pip install "python-lsp-server[all]"~
+	   (f90-mode . lsp)  ;; needs ~pip install fortls~ in a python venv
 	   ;; if you want which-key integration
 	   (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
