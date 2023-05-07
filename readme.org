@@ -383,10 +383,22 @@ Desired functionality:
 Some initial config for the interpreter:
 
 #+begin_src emacs-lisp
-    (add-hook 'python-mode-hook (lambda ()
-      (setq python-shell-interpreter "python3")  ;; TODO: ipython/jupyter console
-      (setq python-shell-completion-native-enable nil)
-      ))
+  (use-package python
+    :ensure nil
+    :custom
+    (python-shell-interpreter "python3")  ;; TODO: ipython/jupyter console
+    (python-shell-completion-native-enable nil))
+#+end_src
+
+** pyvenv mode
+
+Setting this should make lsp, projectile and dap modes use the right python:
+
+#+begin_src emacs-lisp
+  (use-package pyvenv
+    :config
+    (pyvenv-mode 1))
+
 #+end_src
 
 ** pytest config
@@ -394,9 +406,6 @@ Some initial config for the interpreter:
 Needs pytest to be in the python venv.
 
 Use ~projectile-test-project~, and use ~recompile~ for repeating the test.
-
-Compile command needs to include path to venv python (I don't see a good way
-to configure that yet).  For example ~./venv/bin/python -m pytest .~.
 
 There's no other configuration needed here, it works out of the box.
 
