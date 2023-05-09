@@ -366,30 +366,22 @@ Other modes can be added as appropriate.  May be worth doing for python?
 
 * Python configuration
 
-Now that ~elpy~ looks to be stalled, time to investigate replacements.
-Desired functionality:
-
- + conda (and ideally venv) support
- + pytest running
- + code completion
- + docs lookup
- + find definition
- + project support
- + snippet support
- + syntax checking
- + code folding
- + debugging?
+TODO: still need to test conda (rather than venv) support.
 
 ** Python mode config
 
-Some initial config for the interpreter:
+Some initial config for the interpreter and code folding:
 
 #+begin_src emacs-lisp
   (use-package python
     :ensure nil
+    :config
+    (outline-minor-mode t)
     :custom
     (python-shell-interpreter "python3")  ;; TODO: ipython/jupyter console
-    (python-shell-completion-native-enable nil))
+    (python-shell-completion-native-enable nil)
+    :bind (:map python-mode-map
+		("M-o" . outline-mode-prefix-map)))
 #+end_src
 
 ** pyvenv mode
@@ -446,11 +438,6 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
   (setq dap-python-debugger 'debugpy)   ;; Needs ~pip install debugpy~ in the venv being used.
   (require 'dap-python)
 
-  ;; optional if you want which-key integration
-  (use-package which-key
-      :config
-      (which-key-mode))
-
   ;; performance tuning
   (setq gc-cons-threshold 100000000)
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -474,15 +461,39 @@ Use ~yas-new-snippet~ to define a template to be expanded.
   (yas-global-mode 1)
 #+end_src
 
-** Code folding config
+** Ligatures
+
+Pycharm has some pretty ligature support.  Let's see if we can do similar in
+the one true editor.  The built-in ~prettify-symbols~ mode looks to be a good
+place to start.  By default, this replaces ~lambda~, ~and~, and ~or~ with
+symbols (check the buffer local variable ~prettify-symbols-alist~ for the
+current value in a buffer).  Let's add a few more symbols.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this aliquote
+blog post]], there's a few suitable suggestions:
 
 #+begin_src emacs-lisp
-  (add-hook 'python-mode-hook (lambda ()
-				(outline-minor-mode t)))
-  (add-hook 'outline-minor-mode-hook
-	    (lambda () (local-set-key "\M-o"
-				      outline-mode-prefix-map)))
+    (defun add-python-mode-symbols ()
+	    (mapc (lambda (pair) (push pair prettify-symbols-alist))
+	     '(
+		("->" . 8594)
+		("=>" . 8658)
+		("<=" . 8804)
+		(">=" . 8805)
+		("<-" . 8592)
+		("!=" . 8800)
+		)))
+
+    (add-hook 'python-mode-hook (lambda ()
+				  (add-python-mode-symbols)
+				  (prettify-symbols-mode t)
+				  ))
 #+end_src
+
+[[http://www.modernemacs.com/post/prettify-mode/][This modern emacs blog post]] describes using ~describe-char~ and ~insert-char~
+to work out the number needed for a particular symbol, and the use of ~mapc~
+for adding the symbols in a sensible manner.  I've opted to isolate the
+definitions in a function to make it a little more transparent what is being
+added to the python hook.  I think (but haven't confirmed) that the symbols
+list needs to be defined before enabling ~prettify-symbols-mode~.
 
 * Org mode configuration
 
@@ -730,40 +741,6 @@ Note: this needs ~M-x all-the-icons-install-fonts~ to be run once within emacs.
 #+begin_src emacs-lisp
 (require 'all-the-icons)
 #+end_src
-
-** Ligatures
-
-Pycharm has some pretty ligature support.  Let's see if we can do similar in
-the one true editor.  The built-in ~prettify-symbols~ mode looks to be a good
-place to start.  By default, this replaces ~lambda~, ~and~, and ~or~ with
-symbols (check the buffer local variable ~prettify-symbols-alist~ for the
-current value in a buffer).  Let's add a few more symbols.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this aliquote
-blog post]], there's a few suitable suggestions:
-
-#+begin_src emacs-lisp
-    (defun add-python-mode-symbols ()
-	    (mapc (lambda (pair) (push pair prettify-symbols-alist))
-	     '(
-		("->" . 8594)
-		("=>" . 8658)
-		("<=" . 8804)
-		(">=" . 8805)
-		("<-" . 8592)
-		("!=" . 8800)
-		)))
-
-    (add-hook 'python-mode-hook (lambda ()
-				  (add-python-mode-symbols)
-				  (prettify-symbols-mode t)
-				  ))
-#+end_src
-
-[[http://www.modernemacs.com/post/prettify-mode/][This modern emacs blog post]] describes using ~describe-char~ and ~insert-char~
-to work out the number needed for a particular symbol, and the use of ~mapc~
-for adding the symbols in a sensible manner.  I've opted to isolate the
-definitions in a function to make it a little more transparent what is being
-added to the python hook.  I think (but haven't confirmed) that the symbols
-list needs to be defined before enabling ~prettify-symbols-mode~.
 
 * Mastodon configuration
 
