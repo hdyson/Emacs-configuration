@@ -559,7 +559,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
 #+begin_src emacs-lisp
   ;; Initial requirements
   (require 'doom-modeline)
-;;  (doom-modeline-mode 1)
+  (doom-modeline-mode 1)
 
   ;; How tall the mode-line should be. It's only respected in GUI.
   ;; If the actual char height is larger, it respects the actual height.
@@ -607,7 +607,8 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
 
   ;; Whether display icons in the mode-line.
   ;; While using the server mode in GUI, should set the value explicitly.
-  (setq doom-modeline-icon (display-graphic-p))
+  ;;  (setq doom-modeline-icon (display-graphic-p))
+  (setq doom-modeline-icon nil)
 
   ;; Whether display the icon for `major-mode'. It respects `doom-modeline-icon'.
   (setq doom-modeline-major-mode-icon t)
@@ -636,7 +637,7 @@ Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the inst
   ;; Also applies to any derived modes. Respects `doom-modeline-enable-word-count'.
   ;; If it brings the sluggish issue, disable `doom-modeline-enable-word-count' or
   ;; remove the modes from `doom-modeline-continuous-word-count-modes'.
-  (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode))
 
   ;; Whether display the buffer encoding.
   (setq doom-modeline-buffer-encoding t)
