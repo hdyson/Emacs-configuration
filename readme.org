@@ -467,8 +467,21 @@ Use ~dap-toggle-breakpoint~ to add a breakpoint.  Use ~dap-debug~ to run.  ~dap-
 Use ~yas-new-snippet~ to define a template to be expanded.
 
 #+begin_src emacs-lisp
-(require 'yasnippet)
-(yas-global-mode 1)
+  (require 'yasnippet)
+  (setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"
+        ))
+  (yas-global-mode 1)
+#+end_src
+
+** Code folding config
+
+#+begin_src emacs-lisp
+  (add-hook 'python-mode-hook (lambda ()
+				(outline-minor-mode t)))
+  (add-hook 'outline-minor-mode-hook
+	    (lambda () (local-set-key "\M-o"
+				      outline-mode-prefix-map)))
 #+end_src
 
 * Org mode configuration
