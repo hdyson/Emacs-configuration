@@ -47,8 +47,18 @@
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix eshell-xtra))
  '(mouse-avoidance-mode nil nil (avoid))
  '(package-selected-packages
-   '(company command-log-mode lingva mastodon which-key use-package swiper py-autopep8 projectile multiple-cursors markdown-mode magit iedit flycheck flx-ido exec-path-from-shell elpy doom-modeline all-the-icons))
+   '(yasnippet dap-python pyvenv company command-log-mode lingva mastodon which-key use-package swiper py-autopep8 projectile multiple-cursors markdown-mode magit iedit flycheck flx-ido exec-path-from-shell elpy doom-modeline all-the-icons))
  '(revert-without-query '(".*\\.err" ".*\\.out"))
+ '(safe-local-variable-values
+   '((eval add-to-list 'python-shell-exec-path "/Users/hdyson/Repos/Git/AdventOfCode2021/venv/bin")
+     (eval add-to-list 'exec-path "/Users/hdyson/Repos/Git/AdventOfCode2021/venv/bin")
+     (add-to-list 'exec-path "/Users/hdyson/Repos/Git/AdventOfCode2021/venv/bin")
+     (add-to-list 'exec-path
+		  (concat
+		   (projectile-project-root)
+		   "./venv/bin"))
+     (add-to-list 'exec-path "./venv/bin")
+     (python-shell-exec-path . "~/Repos/Git/AdventOfCode2021/venv/bin")))
  '(switch-to-buffer-in-dedicated-window 'prompt)
  '(tab-always-indent 'complete)
  '(tab-stop-list '(4 8)))

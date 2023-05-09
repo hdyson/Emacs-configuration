@@ -273,10 +273,6 @@ for the most common functions.
   (global-set-key [f6]  'execute-extended-command)
   (global-set-key [f7]  'buffer-menu)
 
-  (global-set-key [f9]  'flycheck-next-error)
-  (global-set-key [f10]  'flycheck-mode)
-  (global-set-key [S-f9]  'flycheck-previous-error)
-
   (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
                                           ;; need to sort out how to handle this
                                           ;; (it's muscle memory now, probably
