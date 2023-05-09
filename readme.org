@@ -756,9 +756,5 @@ explicitly enabled:
 
 ** User configuration
 
-This section configures server and username:
-
-#+begin_src emacs-lisp
-  (setq mastodon-instance-url "https://mstdn.social"
-	mastodon-active-user "Honeydew")
-#+end_src
+Also need to configure variables for server ~mastodon-instance-url~ and
+username ~mastodon-active-user~ e.g. in local.el configuration file.
