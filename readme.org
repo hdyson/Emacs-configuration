@@ -129,7 +129,7 @@ And project configuration via projectile:
   :init
   (projectile-mode t)
   :bind (:map projectile-mode-map
-              ("M-p" . projectile-command-map) ;; "s-p" clashes with MacOS print.
+              ("M-o" . projectile-command-map) ;; "s-p" clashes with MacOS print.
               ("C-c p" . projectile-command-map)))
 #+end_src
 
@@ -416,6 +416,7 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 	   (python-mode . lsp)  ;; needs ~pip install "python-lsp-server[all]"~
 	   (f90-mode . lsp)  ;; needs ~pip install fortls~ in a python venv
+	   (rustic-mode . lsp)  ;; needs rust-analyser installed in PATH
 	   ;; if you want which-key integration
 	   (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
@@ -470,6 +471,14 @@ place to start.  By default, this replaces ~lambda~, ~and~, and ~or~ with
 symbols (check the buffer local variable ~prettify-symbols-alist~ for the
 current value in a buffer).  Let's add a few more symbols.  From [[http://www.aliquote.org/post/enliven-your-emacs/][this aliquote
 blog post]], there's a few suitable suggestions:
+
+** Rust config
+
+#+begin_src emacs-lisp
+(use-package rustic
+  :custom
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+#+end_src
 
 #+begin_src emacs-lisp
     (defun add-python-mode-symbols ()
@@ -770,14 +779,18 @@ Note: this needs ~M-x all-the-icons-install-fonts~ to be run once within emacs.
 
 Move minibuffer to top center of the frame.
 #+begin_src emacs-lisp
-      (use-package mini-frame
-      :ensure t
-      :custom ((mini-frame-show-parameters
-     '((top . 10)
-       (width . 0.7)
-       (left . 0.5))))
-      :config (mini-frame-mode t))
-#+end_src
+  (use-package ivy-posframe
+    :diminish
+    :custom
+    (ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
+    (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
+    :config
+    (ivy-posframe-mode t))
+  #+end_src
 
 * Mastodon configuration
 
