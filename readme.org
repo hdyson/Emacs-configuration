@@ -320,6 +320,7 @@ for the most common functions.
 (setq eshell-buffer-maximum-lines 10240)
 (setq eshell-cmpl-compare-entry-function (quote string-lessp))
 (setq eshell-cmpl-cycle-completions nil)
+(setq eshell-history-size 100000)
 
 #+END_SRC
 
