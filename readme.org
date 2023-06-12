@@ -87,7 +87,7 @@ updates need to be done manually:
 
 As an alternative to the above, can use ~use-package~ to install and configure packages.
 
-Initial setup for ~use-package~:
+Initial setup for [[https://jwiegley.github.io/use-package/keywords/][use-package]]:
 
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -363,8 +363,6 @@ Other modes can be added as appropriate.  May be worth doing for python?
 
 * Python configuration
 
-TODO: still need to test conda (rather than venv) support.
-
 To use with venv, use ~pyvenv-activate <venv-path>~.  Any existing python
 buffers need to be refreshed (e.g. with ~revert-buffer~) to benefit.  The venv
 should include ~python-lsp-server~ for code completion etc and ~debugpy~ for
@@ -396,6 +394,33 @@ Setting this should make lsp, projectile and dap modes use the right python:
     (pyvenv-mode 1))
 
 #+end_src
+
+** conda mode
+
+See the [[https://github.com/necaris/conda.el/tree/main][docs]] for details.
+
+#+begin_src emacs-lisp
+    (use-package conda
+      :init
+      (setq conda-anaconda-home "/opt/homebrew/Caskroom/miniforge/base/")
+      (setq conda-env-home-directory "/opt/homebrew/Caskroom/miniforge/base/")
+      :commands
+      (conda-env-initialize-interactive-shells
+      ;; if you want eshell support, include:
+      conda-env-initialize-eshell
+      ;; if you want auto-activation (see below for details), include:
+      ;; conda-env-autoactivate-mode t
+      ;; if you want to automatically activate a conda environment on the opening of a file:
+      ;; (add-to-hook 'find-file-hook (lambda () (when (bound-and-true-p conda-project-env-path)
+      ;; 					(conda-env-activate-for-buffer))))
+      )
+  )
+#+end_src
+
+Turning on ~autoactivate~ means needing to identify the conda environment to load.  From the docs:
+
++ check for a per-directory local variable setting the conda-project-env-path variable with either the name or the full path to an existing conda environment
++ search up the directory tree for a file defining a conda environment, such as an environment.yml file, and try to activate the named environment
 
 ** pytest config
 
