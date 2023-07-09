@@ -1,25 +1,117 @@
 Notice that ~init.el~ translates this org-mode file into an emacs lisp file
 when emacs is started, and then loads the emacs lisp file.
 
-* Bugfix for emacs < 29 and MacOS:
+* Minimal setup
+
+** Quality of life improvements
+
+Put point on variable and do ~C-h v~ to find appropriate docs quickly.
+
+*** Settings for emacs as a whole
+
+These settings are the ones that are not specific to individual buffers or
+modes.  Remove some cruft from the screen, and add useful info instead:
 
 #+begin_src emacs-lisp
-(add-to-list 'image-types 'svg)
+  (tool-bar-mode 0)
+  (column-number-mode t)
+  (setq blink-matching-paren-on-screen t)
+  (show-paren-mode 1)
+  (setq lazy-highlight-max-at-a-time nil) ;; Highlight all search matches
+  (setq show-trailing-whitespace t)
+  (setq visible-bell t)  ;; flash rather than beep
+  (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
 #+end_src
 
-* Package configuration
+And some behaviour changes:
 
-Package configuration typically needs to be first - if it's not, any
-configuration (e.g. keybindings) that needs a package to have been loaded will
-cause an error when starting emacs.
+#+begin_src emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p) ;; change all prompts to y or n
+  (setq confirm-kill-emacs (quote yes-or-no-p))
+  (setq kill-whole-line t)
+  (setq kill-read-only-ok t) ;; ctrl-k yanks read only text (DWIM rather than error)
+  (setq case-fold-search t)
+#+end_src
 
-** Initial setup
+*** Sensible defaults
 
-Initialises the package interface and enable MELPA packages.  [[https://www.reddit.com/r/emacs/comments/etikbz/speaking_as_a_package_maintainer_please_do_not/][This reddit]] post
-convinced me to use normal MELPA rather than stable.
+Tweak a few settings for default behaviour:
+
+#+begin_src emacs-lisp
+  (setq-default fill-column 78)
+  (setq default-major-mode 'text-mode)
+  ;; These three disable attempts to make emacs more windows-like:
+  (setq cua-enable-cua-keys nil)
+  (setq shift-select-mode nil)
+  (setq delete-selection-mode nil)
+  (setq backup-directory-alist '(("." . "~/.emacs.backups")))  ;; backup files to stand alone directory
+  (setq revert-without-query '(".*\\.err" ".*\\.out"))
+  (setq switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
+  (setq-default frame-title-format "%b (%f)") ;; Show file path in frame title
+#+end_src
+
+*** Session persistence
+
+Restores buffers across emacs sessions:
 
 #+BEGIN_SRC emacs-lisp
+(desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/desktop" "~/.emacs.d/" "~"))
+#+END_SRC
 
+Keep a list of recent files:
+
+#+begin_src emacs-lisp
+  (require 'recentf)
+  (recentf-mode t)
+  (setq recentf-max-saved-items 50)
+#+end_src
+
+Persistent minibuffer history
+  #+begin_src emacs-lisp
+  (savehist-mode t)
+  #+end_src
+
+*** Tab, fill and indent behaviour
+
+#+begin_src emacs-lisp
+  (setq backward-delete-char-untabify-method t)
+  (setq indent-tabs-mode nil) ;; Indent inserts spaces always; never tabs.
+  (setq require-final-newline t)
+  (setq colon-double-space t)
+  (setq tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
+  (setq tab-stop-list '(16 32))  ;; make tabs stupidly wide to better identify accidental tabs
+#+end_src
+  
+*** Comment behaviours
+
+#+BEGIN_SRC emacs-lisp
+  (setq comment-empty-lines t)
+  (setq comment-padding 1) ;; Put 1 space between comment markers and code/text.
+  (setq comment-style (quote multi-line))
+#+END_SRC
+
+*** Useful commands that are disabled by default
+
+Working on parts of text:
+ + ~C-x n n~ is narrow-to-region
+ + ~C-x n p~ is narrow-to-page
+ + ~C-x n w~ is widen
+
+#+BEGIN_SRC emacs-lisp
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)
+#+END_SRC
+
+
+** Initial package setup
+
+Initialises the package interface and enable MELPA packages.
+
+#+BEGIN_SRC emacs-lisp
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -27,67 +119,9 @@ convinced me to use normal MELPA rather than stable.
 
 (when (not package-archive-contents)
   (package-refresh-contents))
-
 #+END_SRC
 
-** Define packages to install
-
-1. [[https://github.com/magit/][magit]] - a /usable/ git interface.
-2. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
-3. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
-4. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
-5. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
-   (particularly useful under MacOS).
-6. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
-7. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
-8. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
-9. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
-10. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
-11. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
-12. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
-13. company - complete anything
-14. pyvenv - python venv support
-15. yasnippet - snippet support
-
-#+BEGIN_SRC emacs-lisp
-  (defvar myPackages
-    '(
-      magit
-      markdown-mode
-      multiple-cursors
-      which-key
-      exec-path-from-shell
-      dash
-      doom-modeline
-      all-the-icons
-      emojify
-      discover
-      mastodon
-      lingva
-      company
-      pyvenv
-      yasnippet
-      ))
-#+END_SRC
-
-** Install packages
-
-For each of the previous packages, install them if they're not already
-installed.  Note there's no checking if installed versions are out of date -
-updates need to be done manually:
-
-#+BEGIN_SRC emacs-lisp
-(mapc #'(lambda (package)
-    (unless (package-installed-p package)
-      (package-install package)))
-      myPackages)
-#+END_SRC
-
-** use-package config
-
-As an alternative to the above, can use ~use-package~ to install and configure packages.
-
-Initial setup for [[https://jwiegley.github.io/use-package/keywords/][use-package]]:
+And setup for [[https://jwiegley.github.io/use-package/keywords/][use-package]] for simpler installation and configuration:
 
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -95,6 +129,26 @@ Initial setup for [[https://jwiegley.github.io/use-package/keywords/][use-packag
   (require 'use-package)
   (setq use-package-always-ensure t)
 #+end_src
+
+** Basic packages
+
+There's a couple of essential packages that need to be installed, and don't
+need any configuration:
+
+** Define packages to install
+
+1. [[https://github.com/magit/][magit]] - a /usable/ git interface.
+2. [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] - does what it says on the tin.
+
+#+begin_src emacs-lisp
+  (use-package magit)
+  (use-package markdown-mode)
+#+end_src
+
+** ivy config
+
+As an alternative to the above, can use ~use-package~ to install and configure packages.
+
 
 Then a little experimenting with ~ivy~:
 
@@ -133,76 +187,9 @@ And project configuration via projectile:
               ("C-c p" . projectile-command-map)))
 #+end_src
 
-* Basic configuration
-
-** Desktop mode for restoring buffers across emacs sessions
-#+BEGIN_SRC emacs-lisp
-(desktop-save-mode 1)
-(setq desktop-path '("~/.emacs.d/desktop" "~/.emacs.d/" "~"))
-#+END_SRC
-
-** Quality of life improvements
-
-Put point on variable and do C-h v to find appropriate docs quickly.
-#+BEGIN_SRC emacs-lisp
-  (setq-default fill-column 78)
-  (setq default-major-mode 'text-mode)
-  (tool-bar-mode 0)
-  (column-number-mode t)
-  (fset 'yes-or-no-p 'y-or-n-p) ;; change all prompts to y or n
-  (setq-default frame-title-format "%b (%f)") ;; Show file path in frame title
-  (setq confirm-kill-emacs (quote yes-or-no-p))
-  ;; These three disable attempts to make emacs more windows-like:
-  (setq cua-enable-cua-keys nil)
-  (setq shift-select-mode nil)
-  (setq delete-selection-mode nil)
-  (setq align-indent-before-aligning t)
-  (setq backward-delete-char-untabify-method t)
-  (setq blink-matching-paren-on-screen t)
-  (show-paren-mode 1)
-  (setq require-final-newline t)
-  (setq colon-double-space t)
-  (setq comment-empty-lines t)
-  (setq comment-padding 1) ;; Put 1 space between comment markers and code/text.
-  (setq comment-style (quote multi-line))
-  (setq indent-tabs-mode nil) ;; Indent inserts spaces always; never tabs.
-  (setq kill-whole-line t)
-  (setq kill-read-only-ok t) ;; ctrl-k yanks read only text (DWIM rather than error)
-  (setq lazy-highlight-max-at-a-time nil) ;; Highlight all search matches
-  (setq case-fold-search t)
-  (setq show-trailing-whitespace t)
-  (require 'recentf)
-  (recentf-mode t)
-  (setq recentf-max-saved-items 50)
-  (savehist-mode t)  ;; Persistent minibuffer history
-  (add-hook 'emacs-startup-hook 'eshell) ;; Launch eshell at startup
-  (setq visible-bell t)  ;; flash rather than beep
-  (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
-  (setq backup-directory-alist '(("." . "~/.emacs.backups")))  ;; backup files to stand alone directory
-  (setq custom-enabled-themes '(tango-dark))
-  (setq revert-without-query '(".*\\.err" ".*\\.out"))
-  (setq switch-to-buffer-in-dedicated-window 'prompt)  ;; better compilation window handling - useful for qmk
-
-  (setq tab-always-indent 'complete)  ;; attempt to indent, if that doesn't work trigger completion.
-  (setq tab-stop-list '(8 16))  ;; make tabs stupidly wide to better identify accidental tabs
-#+END_SRC
-
-** Useful commands that are disabled by default
-
-Working on parts of text:
- + ~C-x n n~ is narrow-to-region
- + ~C-x n p~ is narrow-to-page
- + ~C-x n w~ is widen
-
-#+BEGIN_SRC emacs-lisp
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page   'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(put 'scroll-left 'disabled nil)
-#+END_SRC
 
 ** which-key config
+4. [[https://github.com/justbur/emacs-which-key][which-key]] - aide memoire for keyboard shortcuts.
 
 Sets up minibuffer pop up to complete partially entered key combinations.
 
@@ -228,6 +215,7 @@ capability to redirect output to a buffer (e.g. ~ncdump -h >C-c M-b~).
 #+END_SRC
 
 * Completion interface using company
+13. company - complete anything
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook 'global-company-mode)
@@ -304,6 +292,8 @@ for the most common functions.
 
 ** Multiple cursors
 
+3. [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - allows multiple cursors, handy for batch editing.
+
 #+BEGIN_SRC emacs-lisp
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
@@ -326,12 +316,16 @@ for the most common functions.
 
 * shell configuration
 
+6. [[https://github.com/magnars/dash.el][dash]] - simplifies lists in lisp (needed for shell config below)
+
 While ~eshell~ is ideal for interactive use, occasionally a more conventional
 shell is needed.  From [[https://emacs.stackexchange.com/a/9952][stack exchange]], there's three steps to improve ~shell~
 buffers in emacs.
 
 ** Initialise the shell history from the existing bash shell history:
 
+5. [[https://github.com/purcell/exec-path-from-shell#exec-path-from-shell][exec-path-from-shell]] - sanitises environment variables in emacs
+   (particularly useful under MacOS).
 #+BEGIN_SRC emacs-lisp
 (exec-path-from-shell-initialize)
 (exec-path-from-shell-copy-env "HISTFILE")
@@ -385,6 +379,7 @@ Some initial config for the interpreter and code folding:
 #+end_src
 
 ** pyvenv mode
+14. pyvenv - python venv support
 
 Setting this should make lsp, projectile and dap modes use the right python:
 
@@ -443,6 +438,7 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
 	   (python-mode . lsp)  ;; needs ~pip install "python-lsp-server[all]"~
 	   (f90-mode . lsp)  ;; needs ~pip install fortls~ in a python venv
 	   (rustic-mode . lsp)  ;; needs rust-analyser installed in PATH
+	   (cc-mode . lsp)
 	   ;; if you want which-key integration
 	   (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
@@ -463,8 +459,8 @@ Trying out [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]:
   ;; optionally if you want to use debugger
   (use-package dap-mode)
   ;; debugger for python:
-  (setq dap-python-debugger 'debugpy)   ;; Needs ~pip install debugpy~ in the venv being used.
   (require 'dap-python)
+  (setq dap-python-debugger 'debugpy)   ;; Needs ~pip install debugpy~ in the venv being used.
 
   ;; performance tuning
   (setq gc-cons-threshold 100000000)
@@ -481,6 +477,7 @@ Use ~dap-toggle-breakpoint~ to add a breakpoint.  Use ~dap-debug~ to run.  ~dap-
 
 Use ~yas-new-snippet~ to define a template to be expanded.
 
+15. yasnippet - snippet support
 #+begin_src emacs-lisp
   (require 'yasnippet)
   (setq yas-snippet-dirs
@@ -600,6 +597,8 @@ settings.
 * Experimental eye candy
 
 ** Doom modeline
+7. [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] - eye candy
+8. [[https://seagle0128.github.io/doom-modeline/][doom-modeline]] - improved and customisable modeline
 
 Customised via [[https://seagle0128.github.io/doom-modeline/#customize][the instructions]].
 
@@ -819,6 +818,10 @@ Move minibuffer to top center of the frame.
   #+end_src
 
 * Mastodon configuration
+9. [[https://github.com/iqbalansari/emacs-emojify][emojify]] - extension to display emojis (optional for mastodon.el)
+10. [[https://github.com/mickeynp/discover.el][discover]] - context menus (optional for mastodon.el)
+11. [[https://codeberg.org/martianh/mastodon.el][mastodon]] - client for mastodon
+12. [[https://codeberg.org/martianh/lingva.el][lingva]] - untracked google translate client (optional for mastodon.el)
 
 Configuration for mastodon within emacs.  I've opted to install the optional
 ~emojify~ and ~discover~ dependencies, of which ~discover~ needs to be
