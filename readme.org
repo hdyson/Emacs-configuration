@@ -406,12 +406,12 @@ for the most common functions.
   ;; (global-set-key [f6]  'execute-extended-command)
   ;; (global-set-key [f7]  'buffer-menu)
   ;;
-  ;; (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
-  ;;                                         ;; need to sort out how to handle this
-  ;;                                         ;; (it's muscle memory now, probably
-  ;;                                         ;; need to set alternative for
-  ;;                                         ;; org-mode and tolerate it for
-  ;;                                         ;; magit).
+  (global-set-key [C-tab] 'other-window)  ;; Collision with org-mode and magit -
+					  ;; need to sort out how to handle this
+					  ;; (it's muscle memory now, probably
+					  ;; need to set alternative for
+					  ;; org-mode and tolerate it for
+					  ;; magit).
   ;; (global-set-key [C-iso-lefttab] 'other-window)  ;; Attempted fix
   ;;                                                 ;; (ctrl-shift-tab) for above
   ;; (global-set-key [M-delete] 'kill-word)
