@@ -9,9 +9,10 @@ dependencies:
  - pycodestyle
  - pydocstyle
  - flake8
+ - fortls
+ - future
  - pylint
  - pylsp-mypy
  - pyls-isort
  - python-lsp-black
  - python-lsp-ruff
- - fortls

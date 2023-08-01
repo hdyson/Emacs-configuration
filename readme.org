@@ -257,6 +257,16 @@ Some initial config for the interpreter and code folding:
 		("M-o" . outline-mode-prefix-map)))
 #+end_src
 
+*** Flycheck
+
+Flycheck is faster and generally better than the built in flymake:
+
+#+begin_src emacs-lisp
+    (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+end_src
+
 *** Pyvenv mode
 Python venv support via [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]:
 
@@ -312,17 +322,24 @@ conda env, so some configuration for other languages is here too:
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :init
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    (setq lsp-keymap-prefix "C-l")
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	   (python-mode . lsp)  ;; needs ~pip install "python-lsp-server[all]"~
-	   (f90-mode . lsp)  ;; needs ~pip install fortls~ in a python venv
-	   (rustic-mode . lsp)  ;; needs rust-analyser installed in PATH
-	   (cc-mode . lsp)
-	   ;; if you want which-key integration
-	   (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
+	:init
+	;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+	(setq lsp-keymap-prefix "C-l")
+	:hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	       (python-mode . lsp)  ;; needs ~pip install "python-lsp-server[all]"~
+	       (f90-mode . lsp)  ;; needs ~pip install fortls~ in a python venv
+	       (rustic-mode . lsp)  ;; needs rust-analyser installed in PATH
+	       (cc-mode . lsp)
+	       ;; if you want which-key integration
+	       (lsp-mode . lsp-enable-which-key-integration))
+	:config   :config
+  (lsp-register-custom-settings
+   '(("pyls.plugins.pyls_mypy.enabled" t t)
+	 ("pyls.plugins.pyls_mypy.live_mode" nil t)
+	 ("pyls.plugins.pyls_black.enabled" t t)
+	 ("pyls.plugins.pyls_isort.enabled" t t)
+	 ("pyls.plugins.flake8.enabled" t t)))
+	:commands lsp)
   ;; TODO: good keyboard shortcut for ~lsp-rename~
 
   ;; optionally
