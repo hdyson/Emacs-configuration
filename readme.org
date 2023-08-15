@@ -192,21 +192,6 @@ immediately when typing:
 
 #+end_src
 
-** Projectile
-
-Project configuration via [[https://github.com/bbatsov/projectile][projectile]]:
-
-#+begin_src emacs-lisp
-  (use-package projectile
-  :ensure t
-  :init
-  (projectile-mode t)
-  :bind (:map projectile-mode-map
-              ("M-o" . projectile-command-map) ;; "s-p" clashes with MacOS print.
-              ("C-z" . projectile-command-map) ;; Also has advanage of removing suspend-frame
-              ("C-c p" . projectile-command-map)))
-#+end_src
-
 ** which-key config
 
 Set up minibuffer pop up to complete partially entered key combinations via
@@ -224,12 +209,9 @@ Set up minibuffer pop up to complete partially entered key combinations via
 Add [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]] - handy for batch editing.
 
 #+BEGIN_SRC emacs-lisp
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c m c") 'mc/edit-lines)
-(global-set-key (kbd "C-c m >") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c m <") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c m A") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+    (use-package multiple-cursors
+      :bind (
+      ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 #+END_SRC
 
 ** Python package configuration
@@ -270,7 +252,7 @@ Flycheck is faster and generally better than the built in flymake:
 *** Pyvenv mode
 Python venv support via [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]:
 
-This should make lsp, projectile and dap modes use the right python
+This should make lsp, project and dap modes use the right python
 when working with virtual environments (but not conda envs):
 
 #+begin_src emacs-lisp
@@ -663,7 +645,7 @@ instructions]].
   ;; e.g. `projectile' doesn't handle symlink folders well, while `project' is unable
   ;; to hanle sub-projects.
   ;; You can specify one if you encounter the issue.
-  (setq doom-modeline-project-detection 'projectile)
+  (setq doom-modeline-project-detection 'project)
 
   ;; Determines the style used by `doom-modeline-buffer-file-name'.
   ;;
@@ -684,7 +666,7 @@ instructions]].
   ;; If you are experiencing the laggy issue, especially while editing remote files
   ;; with tramp, please try `file-name' style.
   ;; Please refer to https://github.com/bbatsov/projectile/issues/657.
-  (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
 
   ;; Whether display icons in the mode-line.
   ;; While using the server mode in GUI, should set the value explicitly.
@@ -870,8 +852,10 @@ Configuration for [[https://codeberg.org/martianh/mastodon.el][mastodon]] within
 explicitly enabled:
 
 #+begin_src emacs-lisp
-  (require 'mastodon-discover)
-  (with-eval-after-load 'mastodon (mastodon-discover))
+  (use-package mastodon
+    :ensure t
+    :config
+    (mastodon-discover))
 #+end_src
 
 ** User configuration
