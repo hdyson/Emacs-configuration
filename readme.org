@@ -394,7 +394,7 @@ for the most common functions.
 #+BEGIN_SRC emacs-lisp
   ;; (global-set-key [S-insert] 'insert-file)
   ;;
-  ;; (global-set-key [f1]    'find-file-at-point)
+  (global-set-key [f1]    'find-file-at-point)
   ;; (global-set-key [f9]    'find-file-at-point)
   ;; (global-set-key [pause] 'toggle-read-only)
   ;; (global-set-key [f10] 'toggle-read-only)
@@ -411,12 +411,12 @@ for the most common functions.
 					  ;; need to set alternative for
 					  ;; org-mode and tolerate it for
 					  ;; magit).
-  ;; (global-set-key [C-iso-lefttab] 'other-window)  ;; Attempted fix
+  (global-set-key [C-iso-lefttab] 'other-window)  ;; Attempted fix
   ;;                                                 ;; (ctrl-shift-tab) for above
   ;; (global-set-key [M-delete] 'kill-word)
   ;;
   ;; (global-set-key [insert] 'abbrev-mode)
-  ;; (global-set-key [f12] 'recompile)
+  (global-set-key [f12] 'recompile)
   ;;
   ;; (global-set-key [print]  'ps-print-buffer-with-faces)
   ;;
@@ -425,7 +425,7 @@ for the most common functions.
   ;; ;; more useful.
   ;; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
   ;; ;; disable C-x C-c as quit.  Instead, save all buffers with attached files:
-  ;; (global-set-key (kbd "C-x C-c") 'save-some-buffers)
+  (global-set-key (kbd "C-x C-c") 'save-some-buffers)
   ;;
   ;; (global-set-key "\C-cl" 'org-store-link)
   ;; (global-set-key "\C-cc" 'org-capture)
@@ -433,6 +433,17 @@ for the most common functions.
   ;; (global-set-key "\C-cb" 'org-iswitchb)
 
 #+END_SRC
+
+** Project.el configuration
+
+Emacs built-in project provides support for projects within emacs.  But the
+default keybinding isn't great - let's use ~C-z~ as a prefix instead (bonus:
+this disables a common typo that suspends emacs):
+
+#+begin_src emacs-lisp
+  (use-package project
+    :bind-keymap ("C-z" . project-prefix-map))
+#+end_src
 
 * Shell configuration
 
