@@ -863,6 +863,9 @@ Configuration for [[https://codeberg.org/martianh/mastodon.el][mastodon]] within
 explicitly enabled:
 
 #+begin_src emacs-lisp
+  (use-package emojify)
+  (use-package lingva)
+  (use-package discover)
   (use-package mastodon
     :ensure t
     :config
