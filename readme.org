@@ -30,7 +30,7 @@ modes.  Remove some cruft from the screen, and add useful info instead:
   (setq lazy-highlight-max-at-a-time nil) ;; Highlight all search matches
   (setq show-trailing-whitespace t)
   (setq visible-bell t)  ;; flash rather than beep
-  (set-face-attribute 'default nil :font "Monaco" :height 160) ;; Use monaco fixed width font at a sensible size
+  (set-face-attribute 'default nil :font "Monaco" :height 170) ;; Use monaco fixed width font at a sensible size
 #+end_src
 
 And some behaviour changes:
